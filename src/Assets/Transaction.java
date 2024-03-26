@@ -1,7 +1,42 @@
 package Assets;
 
 public class Transaction {
-    protected String symbol;
-    protected double price;
-    protected double amount;
+    private String symbol;
+    private double price;
+    private double amount;
+
+    //#################### SETTERS AND GETTERS ############################################
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    //#################### CONSTRUCTORS ############################################
+    public Transaction() {
+    }
+
+    public Transaction(String symbol, double price, double amount) {
+        this.symbol = symbol;
+        this.price = price;
+        this.amount = amount;
+    }
 }
