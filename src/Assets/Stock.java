@@ -1,8 +1,11 @@
 package Assets;
 
+import Platforms.StockExchange;
+
 public class Stock extends Asset{
 
-    //the stock market
-    private Boolean dividends;
+    private String market;
+    private double dividendRate;
+    private StockExchange exchange;
 
 }

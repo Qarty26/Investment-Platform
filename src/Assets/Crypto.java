@@ -1,5 +1,7 @@
 package Assets;
 
+import Platforms.CryptoExchange;
+
 public class Crypto extends Asset{
 
     //crypto exchange
@@ -8,4 +10,5 @@ public class Crypto extends Asset{
     protected String blockchain;
     protected int tokensIssued;
     protected int transactionSeconds;
+    protected CryptoExchange exchange;
 }
