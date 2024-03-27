@@ -35,6 +35,10 @@ public class Stock extends Asset{
 
     //#################### CONSTRUCTORS ############################################
     public Stock() {
+        super();
+        this.market = "-";
+        this.dividendRate=0;
+        this.exchange=null;
     }
 
     public Stock(String market, double dividendRate, StockExchange exchange) {

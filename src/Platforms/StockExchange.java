@@ -26,6 +26,8 @@ public class StockExchange extends Exchange{
 
 
     public StockExchange() {
+        this.openingHour = 0;
+        this.closeHour = 0;
     }
 
     public StockExchange(String name, Boolean allowDemo, Boolean requireKYC, int openingHour, int closeHour) {

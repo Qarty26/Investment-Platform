@@ -37,7 +37,9 @@ public class CryptoPOS extends Crypto {
 
 
     public CryptoPOS() {
-
+        super();
+        this.apr = 0;
+        this.stakingDuration = 0;
     }
 
     public CryptoPOS(String name, String symbol, String issuer, String industry, double price,

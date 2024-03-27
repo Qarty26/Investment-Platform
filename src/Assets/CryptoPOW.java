@@ -32,10 +32,16 @@ public class CryptoPOW extends Crypto{
     public void setCoinsPerBlock(double coinsPerBlock) {
         this.coinsPerBlock = coinsPerBlock;
     }
+
+
     //#################### CONSTRUCTORS ############################################
 
 
     public CryptoPOW() {
+        super();
+        this.cutRate = 0;
+        this.cutAmount = 0;
+        this.coinsPerBlock = 0;
     }
 
     public CryptoPOW(String name, String symbol, String issuer, String industry, double price,

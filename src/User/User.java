@@ -9,6 +9,8 @@ public class User {
     private String email;
     private int balance;
     private Vector<Account> accounts;
+
+
     //#################### SETTERS AND GETTERS ############################################
 
     public String getName() {
@@ -47,6 +49,10 @@ public class User {
 
 
     public User() {
+        this.name = "-";
+        this.nickName = "-";
+        this.email = "-";
+        this.balance = 0;
     }
 
     public User(String name, String nickName, String email, int balance) {

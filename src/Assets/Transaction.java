@@ -32,6 +32,9 @@ public class Transaction {
 
     //#################### CONSTRUCTORS ############################################
     public Transaction() {
+        this.symbol = "-";
+        this.price = 0;
+        this.amount = 0;
     }
 
     public Transaction(String symbol, double price, double amount) {

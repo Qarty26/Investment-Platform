@@ -61,7 +61,13 @@ public class Crypto extends Asset{
     }
     //#################### CONSTRUCTORS ############################################
     public Crypto() {
-
+        super();
+        this.fixedTokens = false;
+        this.smartContracts = false;
+        this.blockchain = "-";
+        this.tokensIssued = 0;
+        this.transactionSeconds = 0;
+        this.exchange = null;
     }
 
     public Crypto(String name, String symbol, String issuer, String industry, double price,

@@ -62,6 +62,12 @@ public class Asset {
 
 
     public Asset() {
+        this.name = "-";
+        this.symbol = "-";
+        this.issuer = "-";
+        this.industry = "-";
+        this.price = 0;
+        this.marketCapitalization = 0;
     }
 
     public Asset(String name, String symbol, String issuer, String industry, double price,
