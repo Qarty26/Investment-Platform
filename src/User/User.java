@@ -53,6 +53,7 @@ public class User {
         this.nickName = "-";
         this.email = "-";
         this.balance = 0;
+        this.accounts = null;
     }
 
     public User(String name, String nickName, String email, int balance) {
@@ -60,5 +61,6 @@ public class User {
         this.nickName = nickName;
         this.email = email;
         this.balance = balance;
+        this.accounts = null;
     }
 }
