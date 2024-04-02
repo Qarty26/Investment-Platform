@@ -51,10 +51,6 @@ public class Asset {
         this.industry = industry;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
     public void setPrice(double price) {
         this.price = price;
     }
@@ -100,29 +96,32 @@ public class Asset {
     }
 
 
-//    //unfinished
-public Double getPrice(String symbol) {
-    try {
-        String endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=" + symbol;
-        URL url = new URL(endpoint);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
+    //unfinished
+    public Double getPrice() {
+        try {
+            String symbol = getName().toUpperCase();
+            String endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=" + symbol;
+            URL url = new URL(endpoint);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+//            JSONObject jsonResponse = new JSONObject(response.toString());
+//            return Double.parseDouble(jsonResponse.getString("price"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // Handle error gracefully in your application
         }
-        in.close();
 
-        JSONObject jsonResponse = new JSONObject(response.toString());
-        return Double.parseDouble(jsonResponse.getString("price"));
-    } catch (IOException e) {
-        e.printStackTrace();
-        return null; // Handle error gracefully in your application
     }
 
-}
 
+}

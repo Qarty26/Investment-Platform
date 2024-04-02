@@ -27,26 +27,26 @@ public class Wallet {
 
         return null;
     }
-    public Boolean checkAllowedToMove(Vector<Pair<Asset,Double>> subWallet, String asset, double size){
+    public Boolean checkAllowedToMove(Vector<Pair<Asset,Double>> subWallet, String symbol, Double size){
 
         for(var x : subWallet)
-            if(x.getSecond() >= size)
+            if(x.getFirst().getName().equalsIgnoreCase(symbol) && x.getSecond() >= size)
                 return true;
         return false;
     }
-    public Boolean spotToEarn(String asset, double size){
+    public Boolean spotToEarn(String symbol, Double size){
 
-        Integer position = checkExistence(spot,asset);
+        Integer position = checkExistence(spot,symbol);
         if(position == null)
             return false;
-        Boolean enoughSize = checkAllowedToMove(spot,asset,size);
+        Boolean enoughSize = checkAllowedToMove(spot,symbol,size);
         if(!enoughSize)
             return false;
         spot.get(position).setSecond(  spot.get(position).getSecond() - size  );
 
-        position = checkExistence(earn,asset);
+        position = checkExistence(earn,symbol);
         if(position == null) {
-            Asset a = new Asset(asset);
+            Asset a = new Asset(symbol);
             Pair p = new Pair(a,size);
             earn.add(p);
             return true;
@@ -57,19 +57,19 @@ public class Wallet {
         }
     }
 
-    public Boolean earnToSpot(String asset, double size){
+    public Boolean earnToSpot(String symbol, Double size){
 
-        Integer position = checkExistence(earn,asset);
+        Integer position = checkExistence(earn,symbol);
         if(position == null)
             return false;
-        Boolean enoughSize = checkAllowedToMove(earn,asset,size);
+        Boolean enoughSize = checkAllowedToMove(earn,symbol,size);
         if(!enoughSize)
             return false;
         earn.get(position).setSecond(  earn.get(position).getSecond() - size  );
 
-        position = checkExistence(spot,asset);
+        position = checkExistence(spot,symbol);
         if(position == null) {
-            Asset a = new Asset(asset);
+            Asset a = new Asset(symbol);
             Pair p = new Pair(a,size);
             spot.add(p);
             return true;
@@ -80,14 +80,61 @@ public class Wallet {
         }
     }
 
-    public Boolean Trade(String symbol, String type, Double size){
-        if(type.equalsIgnoreCase("BUY"))
-            size = Math.abs(size);
-        else if(type.equalsIgnoreCase("SELL"))
-            size = - Math.abs(size);
+    public Boolean addToSpot(String symbol,Double size){
+        Integer position = checkExistence(spot,symbol);
+        if(position == null){
+            Asset a = new Asset(symbol);
+            Pair p = new Pair(a,size);
+            spot.add(p);
+            return true;
+        }
+        else {
+            spot.get(position).setSecond(spot.get(position).getSecond() + size);
+            return true;
+        }
+
+
+    }
+
+    public Boolean Trade(String symbol, String type, Double cash){
+        Asset asset = new Asset(symbol);
+
+
+
+        if(type.equalsIgnoreCase("BUY")){
+            cash = Math.abs(cash);
+
+            Double price = asset.getPrice();
+            if(price == null || price == 0)
+                return false;
+
+            Double size = cash / price;
+            addToSpot(symbol,size);
+
+            Transaction transaction = new Transaction(symbol,price,size,type);
+            history.add(transaction);
+
+            return true;
+        }
+
+        else if(type.equalsIgnoreCase("SELL")) {
+            cash = - Math.abs(cash);
+
+            Double price = asset.getPrice();
+            if(price == null || price == 0)
+                return false;
+            
+            Double size = cash / price;
+            checkAllowedToMove(spot,symbol,size);
+            addToSpot(symbol,size);
+
+            Transaction transaction = new Transaction(symbol,price,size,type);
+            history.add(transaction);
+
+            return true;
+        }
+
         else return false;
 
-
-        return true;
     }
 }
