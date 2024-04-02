@@ -1,10 +1,12 @@
 package Assets;
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import org.json.JSONObject;
 
 public class Asset {
 
@@ -98,50 +100,29 @@ public class Asset {
     }
 
 
-    //unfinished
-    public Double getPrice(String symbol) throws IOException {
-
+//    //unfinished
+public Double getPrice(String symbol) {
+    try {
         String endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=" + symbol;
-
         URL url = new URL(endpoint);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
 
-        // Create HttpURLConnection object
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
 
-        // Set request method
-        connection.setRequestMethod("GET");
-
-        // Get the response code
-        int responseCode = connection.getResponseCode();
-
-        // Check if the response code is OK (200)
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            // Create BufferedReader to read the response
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-
-            // Read response line by line
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-
-            // Close BufferedReader
-            reader.close();
-
-            // Extract the price from the response string
-            String responseBody = response.toString();
-            String priceString = responseBody.split("\"price\":\"")[1].split("\"")[0];
-            double price = Double.parseDouble(priceString);
-
-            // Print the price
-            System.out.println("Price: " + price);
-            connection.disconnect();
-            return price;
-        } else {
-
-            connection.disconnect();
-            return null;
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
         }
+        in.close();
+
+        JSONObject jsonResponse = new JSONObject(response.toString());
+        return Double.parseDouble(jsonResponse.getString("price"));
+    } catch (IOException e) {
+        e.printStackTrace();
+        return null; // Handle error gracefully in your application
     }
+
 }
+
