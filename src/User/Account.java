@@ -28,7 +28,13 @@ public class Account {
 
     //#################### CONSTRUCTORS ############################################
 
-    public Account(Wallet wallet, Exchange exchange, Integer balance) {
+
+    public Account(Exchange exchange) {
+        this.wallet = new Wallet();
+        this.exchange = exchange;
+    }
+
+    public Account(Wallet wallet, Exchange exchange) {
         this.wallet = wallet;
         this.exchange = exchange;
     }

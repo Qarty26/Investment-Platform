@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import org.json.JSONObject;
+//import org.json.JSONObject;
 
 public class Asset {
 
@@ -98,29 +98,33 @@ public class Asset {
 
     //unfinished
     public Double getPrice() {
-        try {
-            String symbol = getName().toUpperCase();
-            String endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=" + symbol;
-            URL url = new URL(endpoint);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
+//        try {
+//            String symbol = getName().toUpperCase();
+//            String endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=" + symbol;
+//            URL url = new URL(endpoint);
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//            conn.setRequestMethod("GET");
+//
+//            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//            String inputLine;
+//            StringBuilder response = new StringBuilder();
+//
+//            while ((inputLine = in.readLine()) != null) {
+//                response.append(inputLine);
+//            }
+//            in.close();
+//
+////            JSONObject jsonResponse = new JSONObject(response.toString());
+////            return Double.parseDouble(jsonResponse.getString("price"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null; // Handle error gracefully in your application
+//        }
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
 
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
 
-//            JSONObject jsonResponse = new JSONObject(response.toString());
-//            return Double.parseDouble(jsonResponse.getString("price"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // Handle error gracefully in your application
-        }
-
+        //to be removed, don't ask
+        return 0.0;
     }
 
 
