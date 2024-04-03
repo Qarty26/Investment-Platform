@@ -1,9 +1,8 @@
-import Assets.Asset;
-import Platforms.CryptoExchange;
-import Platforms.Exchange;
-import Platforms.StockExchange;
-import User.User;
-import User.Account;
+import Model.Platforms.CryptoExchange;
+import Model.Platforms.Exchange;
+import Model.Platforms.StockExchange;
+import Model.User.User;
+import Model.User.Account;
 
 
 import java.util.Vector;
