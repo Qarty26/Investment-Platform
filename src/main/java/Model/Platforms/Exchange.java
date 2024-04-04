@@ -2,6 +2,7 @@ package Model.Platforms;
 
 public class Exchange {
 
+    protected int idExchange;
     protected String name;
     protected Boolean allowDemo;
     protected Boolean requireKYC;

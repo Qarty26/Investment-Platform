@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class DatabaseConnection {
 
-    private static final String DB_DRIVER = System.getenv("DB_DRIVER");
-    private static final String DB_URL = System.getenv("DB_URL");
-    private static final String DB_USER = System.getenv("DB_USER");
-    private static final String DB_PASS = System.getenv("DB_PASS");
+    private static final String DB_DRIVER = System.getenv("oracle.jdbc.OracleDriver");
+    private static final String DB_URL = System.getenv("jdbc:oracle:thin:@//localhost:1521/orcl");
+    private static final String DB_USER = System.getenv("java");
+    private static final String DB_PASS = System.getenv("oracle");
     public static Connection connection;
     private static DatabaseConnection instance;
 

@@ -4,12 +4,14 @@ import Model.Assets.Asset;
 import Model.Assets.Transaction;
 import Model.Helpers.Pair;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Vector;
 
 
 
 public class Wallet {
+    private int idWallet;
     final Vector<Pair<Asset,Double>> spot;
     final Vector<Pair<Asset,Double>> earn;
     final Vector<Transaction> history;
@@ -127,14 +129,14 @@ public class Wallet {
     //trade function, only types eligible are Buy and Sell
     //cash is made positive and adapted corresponding to the type
     //history is updated
-    public Boolean Trade(String symbol, String type, Double cash){
+    public Boolean Trade(String symbol, String type, Double cash) throws IOException {
 
 
         Asset asset = new Asset(symbol);
 
         if(type.equalsIgnoreCase("BUY")){
             cash = Math.abs(cash);
-            if(cash < balance)
+            if(cash > balance)
                 return false;
 
             Double price = asset.getPrice();
@@ -146,7 +148,7 @@ public class Wallet {
                 return false;
             addToSpot(symbol,size);
 
-            Transaction transaction = new Transaction(symbol,price,size,type);
+            Transaction transaction = new Transaction(100,symbol,price,size,type);
             history.add(transaction);
 
             return true;
@@ -165,7 +167,7 @@ public class Wallet {
                 return false;
             addToSpot(symbol,size);
 
-            Transaction transaction = new Transaction(symbol,price,size,type);
+            Transaction transaction = new Transaction(100,symbol,price,size,type);
             history.add(transaction);
 
             return true;

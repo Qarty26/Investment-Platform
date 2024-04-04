@@ -4,6 +4,7 @@ import java.util.Vector;
 
 public class User {
 
+    private int idUser;
     private String name;
     private String nickName;
     private String email;

@@ -1,3 +1,4 @@
+import Model.Assets.Asset;
 import Model.Platforms.CryptoExchange;
 import Model.Platforms.Exchange;
 import Model.Platforms.StockExchange;
@@ -5,12 +6,13 @@ import Model.User.User;
 import Model.User.Account;
 
 
+import java.io.IOException;
 import java.util.Vector;
 
 public class Main {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         Vector<Exchange> exchanges = new Vector<>();
@@ -52,11 +54,14 @@ public class Main {
         users.get(0).trasferBalanceToExchange(1000.0,"coinbase");
         System.out.println(users.get(0).getBalance());
         System.out.println(users.get(0).getAccounts().get(0).getWallet().getBalance());
+        System.out.println("------");
+        users.get(0).getAccounts().get(0).getWallet().updateBalance(200.0);
+        users.get(0).getAccounts().get(0).getWallet().Trade("BTCUSDT","BUY", 100.0);
+        System.out.println(users.get(0).getAccounts().get(0).getWallet().getBalance());
 
 
-//        String pair = "btc";
-//        Asset as = new Asset(pair);
-//        System.out.println(as.getPrice());
+
+
 
     }
 }

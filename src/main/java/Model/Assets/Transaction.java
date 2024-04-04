@@ -1,6 +1,7 @@
 package Model.Assets;
 
 public class Transaction {
+    private int idTransaction;
     private String symbol;
     private double price;
     private double amount;
@@ -47,7 +48,8 @@ public class Transaction {
         this.type = null;
     }
 
-    public Transaction(String symbol, double price, double amount,String type) {
+    public Transaction(int idTransaction,String symbol, double price, double amount,String type) {
+        this.idTransaction = idTransaction;
         this.symbol = symbol;
         this.price = price;
         this.amount = amount;

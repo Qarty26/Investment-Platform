@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-//import org.json.JSONObject;
+import org.json.JSONObject;
 
 public class Asset {
+    private int idAsset;
 
     protected String name;
     protected String symbol;
@@ -97,34 +98,43 @@ public class Asset {
 
 
     //unfinished
-    public Double getPrice() {
-//        try {
-//            String symbol = getName().toUpperCase();
-//            String endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=" + symbol;
-//            URL url = new URL(endpoint);
-//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//            conn.setRequestMethod("GET");
-//
-//            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//            String inputLine;
-//            StringBuilder response = new StringBuilder();
-//
-//            while ((inputLine = in.readLine()) != null) {
-//                response.append(inputLine);
-//            }
-//            in.close();
-//
-////            JSONObject jsonResponse = new JSONObject(response.toString());
-////            return Double.parseDouble(jsonResponse.getString("price"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null; // Handle error gracefully in your application
-//        }
 
+    public double getPrice() throws IOException {
+        String url = "https://api.binance.com/api/v3/ticker/price?symbol=" + symbol.toUpperCase();
 
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
 
-        //to be removed, don't ask
-        return 0.0;
+        int responseCode = con.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Parse JSON response
+            JSONObject jsonResponse = new JSONObject(response.toString());
+            double price = jsonResponse.getDouble("price");
+            return price;
+        } else {
+            System.out.println("Error response code: " + responseCode);
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = errorReader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            errorReader.close();
+
+            System.out.println("Error response: " + response.toString());
+            throw new IOException("HTTP error code: " + responseCode);
+        }
     }
 
 

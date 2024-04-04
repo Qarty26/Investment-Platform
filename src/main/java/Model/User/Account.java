@@ -5,6 +5,8 @@ import Model.Platforms.Exchange;
 
 public class Account {
 
+    private int idWallet;
+    private int idExchange;
     private Wallet wallet;
     private Exchange exchange;
     //#################### SETTERS AND GETTERS ############################################
