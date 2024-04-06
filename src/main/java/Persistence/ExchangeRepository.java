@@ -1,8 +1,10 @@
 package Persistence;
 
+import Exceptions.InvalidDataException;
 import Model.Platforms.Exchange;
 import Service.DatabaseConnection;
 
+import java.util.Vector;
 
 
 public class ExchangeRepository implements GenericRepository<Exchange>{
@@ -13,31 +15,49 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
         this.db = db;
     }
 
-
+    Vector<Exchange> exchanges = new Vector<>();
 
     @Override
-    public void add(Exchange exchange){
-
+    public void add(Exchange exchange) throws InvalidDataException {
+        if (exchange == null) {
+            throw new InvalidDataException("Cannot add null exchange.");
+        }
+        exchanges.add(exchange);
     }
 
     @Override
-    public Exchange get(int index){
-        return null;
+    public Exchange get(int index) throws InvalidDataException {
+        if (index < 0 || index >= exchanges.size()) {
+            throw new InvalidDataException("Invalid index for getting exchange.");
+        }
+        return exchanges.get(index);
     }
 
     @Override
-    public void update(Exchange exchange) {
-
+    public void update(Exchange exchange) throws InvalidDataException {
+        if (exchange == null) {
+            throw new InvalidDataException("Cannot update null exchange.");
+        }
+        int index = exchanges.indexOf(exchange);
+        if (index == -1) {
+            throw new InvalidDataException("Exchange not found for update.");
+        }
+        exchanges.set(index, exchange);
     }
 
     @Override
-    public void delete(Exchange exchange) {
+    public void delete(Exchange exchange) throws InvalidDataException {
+        if (exchange == null) {
+            throw new InvalidDataException("Cannot delete null exchange.");
+        }
+        if (!exchanges.remove(exchange)) {
+            throw new InvalidDataException("Exchange not found for deletion.");
+        }
 
     }
 
     @Override
     public int getSize() {
-        return 0;
-//        return exchanges.size();
+        return exchanges.size();
     }
 }
