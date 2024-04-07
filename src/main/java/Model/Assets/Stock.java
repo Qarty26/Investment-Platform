@@ -1,12 +1,14 @@
 package Model.Assets;
 
+import Model.Helpers.ReadUpdateInterface;
 import Model.Platforms.StockExchange;
 
-public class Stock extends Asset{
+import java.util.Scanner;
+
+public class Stock extends Asset implements ReadUpdateInterface {
 
     private String market;
     private double dividendRate;
-    private StockExchange exchange;
 
     //#################### SETTERS AND GETTERS ############################################
     public String getMarket() {
@@ -25,25 +27,48 @@ public class Stock extends Asset{
         this.dividendRate = dividendRate;
     }
 
-    public StockExchange getExchange() {
-        return exchange;
-    }
-
-    public void setExchange(StockExchange exchange) {
-        this.exchange = exchange;
-    }
 
     //#################### CONSTRUCTORS ############################################
     public Stock() {
         super();
         this.market = "-";
-        this.dividendRate=0;
-        this.exchange=null;
+        this.dividendRate = 0;
     }
 
     public Stock(String market, double dividendRate, StockExchange exchange) {
         this.market = market;
         this.dividendRate = dividendRate;
-        this.exchange = exchange;
+    }
+
+
+    @Override
+    public void read() {
+        super.read();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter market: ");
+        setMarket(sc.nextLine());
+
+        System.out.print("Enter dividend rate: ");
+        setDividendRate(sc.nextDouble());
+
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Do you want to update market? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new market: ");
+            setMarket(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update dividend rate? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new dividend rate: ");
+            setDividendRate(sc.nextDouble());
+        }
     }
 }

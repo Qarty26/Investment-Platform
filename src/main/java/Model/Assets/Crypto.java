@@ -1,15 +1,18 @@
 package Model.Assets;
 
+import Model.Helpers.ReadUpdateInterface;
 import Model.Platforms.CryptoExchange;
 
-public class Crypto extends Asset{
+import java.util.Scanner;
+
+public class Crypto extends Asset implements ReadUpdateInterface {
 
     protected Boolean fixedTokens;
     protected Boolean smartContracts;
     protected String blockchain;
     protected int tokensIssued;
     protected int transactionSeconds;
-    protected CryptoExchange exchange;
+
 
     //#################### SETTERS AND GETTERS ############################################
     public Boolean getFixedTokens() {
@@ -52,13 +55,7 @@ public class Crypto extends Asset{
         this.transactionSeconds = transactionSeconds;
     }
 
-    public CryptoExchange getExchange() {
-        return exchange;
-    }
 
-    public void setExchange(CryptoExchange exchange) {
-        this.exchange = exchange;
-    }
     //#################### CONSTRUCTORS ############################################
     public Crypto() {
         super();
@@ -67,12 +64,11 @@ public class Crypto extends Asset{
         this.blockchain = "-";
         this.tokensIssued = 0;
         this.transactionSeconds = 0;
-        this.exchange = null;
     }
 
     public Crypto(String name, String symbol, String issuer, String industry, double price,
                   double marketCapitalization, Boolean fixedTokens, Boolean smartContracts,
-                  String blockchain, int tokensIssued, int transactionSeconds, CryptoExchange exchange) {
+                  String blockchain, int tokensIssued, int transactionSeconds) {
 
         super(name, symbol, issuer, industry, price, marketCapitalization);
         this.fixedTokens = fixedTokens;
@@ -80,6 +76,64 @@ public class Crypto extends Asset{
         this.blockchain = blockchain;
         this.tokensIssued = tokensIssued;
         this.transactionSeconds = transactionSeconds;
-        this.exchange = exchange;
+    }
+
+
+
+    @Override
+    public void read() {
+        super.read(); // Call the read() method of the parent class (Asset)
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Does it have fixed tokens? (true/false): ");
+        setFixedTokens(sc.nextBoolean());
+
+        System.out.print("Does it support smart contracts? (true/false): ");
+        setSmartContracts(sc.nextBoolean());
+
+        System.out.print("Enter blockchain: ");
+        setBlockchain(sc.nextLine());
+
+        System.out.print("Enter tokens issued: ");
+        setTokensIssued(sc.nextInt());
+
+        System.out.print("Enter transaction seconds: ");
+        setTransactionSeconds(sc.nextInt());
+    }
+
+    @Override
+    public void update() {
+        super.update(); // Call the update() method of the parent class (Asset)
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Do you want to update fixed tokens? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Does it have fixed tokens? (true/false): ");
+            setFixedTokens(sc.nextBoolean());
+        }
+
+        System.out.print("Do you want to update smart contracts? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Does it support smart contracts? (true/false): ");
+            setSmartContracts(sc.nextBoolean());
+        }
+
+        System.out.print("Do you want to update blockchain? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new blockchain: ");
+            setBlockchain(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update tokens issued? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new tokens issued: ");
+            setTokensIssued(sc.nextInt());
+        }
+
+        System.out.print("Do you want to update transaction seconds? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new transaction seconds: ");
+            setTransactionSeconds(sc.nextInt());
+        }
     }
 }

@@ -1,6 +1,10 @@
 package Model.Platforms;
 
-public class CryptoExchange extends Exchange {
+import Model.Helpers.ReadUpdateInterface;
+
+import java.util.Scanner;
+
+public class CryptoExchange extends Exchange implements ReadUpdateInterface {
 
     private Boolean allowLeverage;
     private Boolean ICOs;
@@ -48,5 +52,44 @@ public class CryptoExchange extends Exchange {
         this.allowLeverage = allowLeverage;
         this.ICOs = ICOs;
         this.cardPlans = cardPlans;
+    }
+
+    @Override
+    public void read() {
+        super.read();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Allow leverage? (true/false): ");
+        setAllowLeverage(sc.nextBoolean());
+
+        System.out.print("Support ICOs? (true/false): ");
+        setICOs(sc.nextBoolean());
+
+        System.out.print("Offer card plans? (true/false): ");
+        setCardPlans(sc.nextBoolean());
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Do you want to update allowLeverage? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Allow leverage? (true/false): ");
+            setAllowLeverage(sc.nextBoolean());
+        }
+
+        System.out.print("Do you want to update ICOs? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Support ICOs? (true/false): ");
+            setICOs(sc.nextBoolean());
+        }
+
+        System.out.print("Do you want to update cardPlans? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Offer card plans? (true/false): ");
+            setCardPlans(sc.nextBoolean());
+        }
     }
 }

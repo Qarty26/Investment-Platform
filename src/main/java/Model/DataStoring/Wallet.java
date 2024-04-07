@@ -11,7 +11,7 @@ import java.util.Vector;
 
 
 public class Wallet {
-    private int idWallet;
+
     final Vector<Pair<Asset,Double>> spot;
     final Vector<Pair<Asset,Double>> earn;
     final Vector<Transaction> history;

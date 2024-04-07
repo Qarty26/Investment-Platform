@@ -1,6 +1,10 @@
 package Model.Platforms;
 
-public class StockExchange extends Exchange{
+import Model.Helpers.ReadUpdateInterface;
+
+import java.util.Scanner;
+
+public class StockExchange extends Exchange implements ReadUpdateInterface {
 
     private int openingHour;
     private int closeHour;
@@ -34,5 +38,36 @@ public class StockExchange extends Exchange{
         super(name, allowDemo, requireKYC);
         this.openingHour = openingHour;
         this.closeHour = closeHour;
+    }
+
+
+    @Override
+    public void read() {
+        super.read(); // call the read() method of the parent class (Exchange)
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter opening hour: ");
+        setOpeningHour(sc.nextInt());
+
+        System.out.print("Enter closing hour: ");
+        setCloseHour(sc.nextInt());
+    }
+
+    @Override
+    public void update() {
+        super.update(); // call the update() method of the parent class (Exchange)
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Do you want to update opening hour? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new opening hour: ");
+            setOpeningHour(sc.nextInt());
+        }
+
+        System.out.print("Do you want to update closing hour? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new closing hour: ");
+            setCloseHour(sc.nextInt());
+        }
     }
 }

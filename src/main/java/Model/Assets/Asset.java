@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
+
+import Model.Helpers.ReadUpdateInterface;
 import org.json.JSONObject;
 
-public class Asset {
-    private int idAsset;
+public class Asset implements ReadUpdateInterface {
 
     protected String name;
     protected String symbol;
@@ -97,8 +99,6 @@ public class Asset {
     }
 
 
-    //unfinished
-
     public double getPrice() throws IOException {
         String url = "https://api.binance.com/api/v3/ticker/price?symbol=" + symbol.toUpperCase();
 
@@ -136,6 +136,73 @@ public class Asset {
             throw new IOException("HTTP error code: " + responseCode);
         }
     }
+
+    @Override
+    public void read() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter asset name: ");
+        setName(sc.nextLine());
+
+        System.out.print("Enter asset symbol: ");
+        setSymbol(sc.nextLine());
+
+        System.out.print("Enter issuer: ");
+        setIssuer(sc.nextLine());
+
+        System.out.print("Enter industry: ");
+        setIndustry(sc.nextLine());
+
+        System.out.print("Enter price: ");
+        setPrice(sc.nextDouble());
+
+        System.out.print("Enter market capitalization: ");
+        setMarketCapitalization(sc.nextDouble());
+    }
+
+    @Override
+    public void update() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Do you want to update name? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new name: ");
+            setName(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update symbol? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new symbol: ");
+            setSymbol(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update issuer? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new issuer: ");
+            setIssuer(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update industry? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new industry: ");
+            setIndustry(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update price? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new price: ");
+            setPrice(sc.nextDouble());
+        }
+
+        System.out.print("Do you want to update market capitalization? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new market capitalization: ");
+            setMarketCapitalization(sc.nextDouble());
+        }
+    }
+
+
+
 
 
 }

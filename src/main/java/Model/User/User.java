@@ -1,10 +1,12 @@
 package Model.User;
 
+import Model.Helpers.ReadUpdateInterface;
+
+import java.util.Scanner;
 import java.util.Vector;
 
-public class User {
+public class User implements ReadUpdateInterface {
 
-    private int idUser;
     private String name;
     private String nickName;
     private String email;
@@ -93,5 +95,51 @@ public class User {
         }
 
         return false;
+    }
+
+    @Override
+    public void read() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter name: ");
+        setName(sc.nextLine());
+
+        System.out.print("Enter nickname: ");
+        setNickName(sc.nextLine());
+
+        System.out.print("Enter email: ");
+        setEmail(sc.nextLine());
+
+        System.out.print("Enter balance: ");
+        updateBalance(sc.nextDouble());
+    }
+
+    @Override
+    public void update() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Do you want to update the name? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new name: ");
+            setName(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update the nickname? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new nickname: ");
+            setNickName(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update the email? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new email: ");
+            setEmail(sc.nextLine());
+        }
+
+        System.out.print("Do you want to update the balance? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter how much you want to add/substract: ");
+            updateBalance(sc.nextDouble());
+        }
     }
 }
