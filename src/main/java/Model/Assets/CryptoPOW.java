@@ -98,4 +98,24 @@ public class CryptoPOW extends Crypto implements ReadUpdateInterface {
         }
     }
 
+
+    @Override
+    public String toString() {
+        return "CryptoPOW{" +
+                "cutRate=" + cutRate +
+                ", cutAmount=" + cutAmount +
+                ", coinsPerBlock=" + coinsPerBlock +
+                ", fixedTokens=" + fixedTokens +
+                ", smartContracts=" + smartContracts +
+                ", blockchain='" + blockchain + '\'' +
+                ", tokensIssued=" + tokensIssued +
+                ", transactionSeconds=" + transactionSeconds +
+                ", name='" + name + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", issuer='" + issuer + '\'' +
+                ", industry='" + industry + '\'' +
+                ", price=" + price +
+                ", marketCapitalization=" + marketCapitalization +
+                '}';
+    }
 }

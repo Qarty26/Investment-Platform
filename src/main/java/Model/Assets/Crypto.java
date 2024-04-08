@@ -136,4 +136,21 @@ public class Crypto extends Asset implements ReadUpdateInterface {
             setTransactionSeconds(sc.nextInt());
         }
     }
+
+    @Override
+    public String toString() {
+        return "Crypto{" +
+                "fixedTokens=" + fixedTokens +
+                ", smartContracts=" + smartContracts +
+                ", blockchain='" + blockchain + '\'' +
+                ", tokensIssued=" + tokensIssued +
+                ", transactionSeconds=" + transactionSeconds +
+                ", name='" + name + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", issuer='" + issuer + '\'' +
+                ", industry='" + industry + '\'' +
+                ", price=" + price +
+                ", marketCapitalization=" + marketCapitalization +
+                '}';
+    }
 }

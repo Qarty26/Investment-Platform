@@ -38,4 +38,12 @@ public class Account {
         this.wallet = wallet;
         this.exchange = exchange;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "wallet=" + wallet +
+                ", exchange=" + exchange +
+                '}';
+    }
 }

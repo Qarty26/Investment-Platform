@@ -92,4 +92,16 @@ public class CryptoExchange extends Exchange implements ReadUpdateInterface {
             setCardPlans(sc.nextBoolean());
         }
     }
+
+    @Override
+    public String toString() {
+        return "CryptoExchange{" +
+                "allowLeverage=" + allowLeverage +
+                ", ICOs=" + ICOs +
+                ", cardPlans=" + cardPlans +
+                ", name='" + name + '\'' +
+                ", allowDemo=" + allowDemo +
+                ", requireKYC=" + requireKYC +
+                '}';
+    }
 }

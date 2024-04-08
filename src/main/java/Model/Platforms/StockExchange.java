@@ -70,4 +70,16 @@ public class StockExchange extends Exchange implements ReadUpdateInterface {
             setCloseHour(sc.nextInt());
         }
     }
+
+
+    @Override
+    public String toString() {
+        return "StockExchange{" +
+                "openingHour=" + openingHour +
+                ", closeHour=" + closeHour +
+                ", name='" + name + '\'' +
+                ", allowDemo=" + allowDemo +
+                ", requireKYC=" + requireKYC +
+                '}';
+    }
 }

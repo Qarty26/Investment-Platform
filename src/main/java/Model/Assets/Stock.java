@@ -71,4 +71,18 @@ public class Stock extends Asset implements ReadUpdateInterface {
             setDividendRate(sc.nextDouble());
         }
     }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "market='" + market + '\'' +
+                ", dividendRate=" + dividendRate +
+                ", name='" + name + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", issuer='" + issuer + '\'' +
+                ", industry='" + industry + '\'' +
+                ", price=" + price +
+                ", marketCapitalization=" + marketCapitalization +
+                '}';
+    }
 }

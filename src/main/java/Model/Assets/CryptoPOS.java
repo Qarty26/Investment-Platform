@@ -94,4 +94,23 @@ public class CryptoPOS extends Crypto implements ReadUpdateInterface {
     }
 
 
+    @Override
+    public String toString() {
+        return "CryptoPOS{" +
+                "apr=" + apr +
+                ", minStakeRequirement=" + minStakeRequirement +
+                ", stakingDuration=" + stakingDuration +
+                ", fixedTokens=" + fixedTokens +
+                ", smartContracts=" + smartContracts +
+                ", blockchain='" + blockchain + '\'' +
+                ", tokensIssued=" + tokensIssued +
+                ", transactionSeconds=" + transactionSeconds +
+                ", name='" + name + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", issuer='" + issuer + '\'' +
+                ", industry='" + industry + '\'' +
+                ", price=" + price +
+                ", marketCapitalization=" + marketCapitalization +
+                '}';
+    }
 }

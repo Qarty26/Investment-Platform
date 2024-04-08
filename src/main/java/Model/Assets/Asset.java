@@ -202,7 +202,15 @@ public class Asset implements ReadUpdateInterface {
     }
 
 
-
-
-
+    @Override
+    public String toString() {
+        return "Asset{" +
+                "name='" + name + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", issuer='" + issuer + '\'' +
+                ", industry='" + industry + '\'' +
+                ", price=" + price +
+                ", marketCapitalization=" + marketCapitalization +
+                '}';
+    }
 }

@@ -54,4 +54,14 @@ public class Transaction {
         this.amount = amount;
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "symbol='" + symbol + '\'' +
+                ", price=" + price +
+                ", amount=" + amount +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

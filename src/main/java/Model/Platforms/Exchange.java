@@ -86,6 +86,12 @@ public class Exchange implements ReadUpdateInterface {
         }
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Exchange{" +
+                "name='" + name + '\'' +
+                ", allowDemo=" + allowDemo +
+                ", requireKYC=" + requireKYC +
+                '}';
+    }
 }

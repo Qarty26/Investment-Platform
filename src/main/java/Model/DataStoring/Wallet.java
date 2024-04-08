@@ -176,4 +176,14 @@ public class Wallet {
         else return false;
 
     }
+
+    @Override
+    public String toString() {
+        return "Wallet{" +
+                "spot=" + spot +
+                ", earn=" + earn +
+                ", history=" + history +
+                ", balance=" + balance +
+                '}';
+    }
 }

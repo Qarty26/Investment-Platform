@@ -142,4 +142,15 @@ public class User implements ReadUpdateInterface {
             updateBalance(sc.nextDouble());
         }
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", email='" + email + '\'' +
+                ", balance=" + balance +
+                ", accounts=" + accounts +
+                '}';
+    }
 }
