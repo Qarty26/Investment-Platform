@@ -3,8 +3,10 @@ package Persistence;
 import Exceptions.InvalidDataException;
 import Model.DataStoring.Wallet;
 import Model.Platforms.Exchange;
+import Model.User.User;
 import Service.DatabaseConnection;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class WalletRepository implements GenericRepository<Wallet>{
@@ -31,6 +33,12 @@ public class WalletRepository implements GenericRepository<Wallet>{
             throw new InvalidDataException("Invalid index for getting exchange.");
         }
         return wallets.get(id);
+    }
+
+    @Override
+    public ArrayList<Wallet> getAll() {
+        ArrayList<Wallet> allWallets = new ArrayList<>(wallets);
+        return allWallets;
     }
 
     @Override

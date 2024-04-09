@@ -4,6 +4,7 @@ import Exceptions.InvalidDataException;
 import Model.User.User;
 import Service.DatabaseConnection;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class UserRepository implements GenericRepository<User> {
@@ -29,6 +30,12 @@ public class UserRepository implements GenericRepository<User> {
             throw new InvalidDataException("Invalid index for getting user.");
         }
         return users.get(index);
+    }
+
+    @Override
+    public ArrayList<User> getAll() {
+        ArrayList<User> allAssets = new ArrayList<>(users);
+        return allAssets;
     }
 
     @Override

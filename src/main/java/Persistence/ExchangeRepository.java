@@ -4,6 +4,7 @@ import Exceptions.InvalidDataException;
 import Model.Platforms.Exchange;
 import Service.DatabaseConnection;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 
@@ -31,6 +32,12 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
             throw new InvalidDataException("Invalid index for getting exchange.");
         }
         return exchanges.get(index);
+    }
+
+    @Override
+    public ArrayList<Exchange> getAll() {
+        ArrayList<Exchange> allAssets = new ArrayList<>(exchanges);
+        return allAssets;
     }
 
     @Override

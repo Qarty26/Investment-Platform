@@ -4,6 +4,7 @@ import Exceptions.InvalidDataException;
 import Model.Assets.Asset;
 import Service.DatabaseConnection;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class AssetRepository implements GenericRepository<Asset> {
@@ -29,6 +30,12 @@ public class AssetRepository implements GenericRepository<Asset> {
             throw new InvalidDataException("Invalid index for getting asset.");
         }
         return assets.get(index);
+    }
+
+    @Override
+    public ArrayList<Asset> getAll() {
+        ArrayList<Asset> allAssets = new ArrayList<>(assets);
+        return allAssets;
     }
 
     @Override
