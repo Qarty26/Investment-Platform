@@ -15,49 +15,47 @@ public class DatabaseConnection {
     public static Connection connection;
     private static DatabaseConnection instance;
 
-    private DatabaseConnection(){
-        try {
-            Class.forName(DB_DRIVER);
-            connection = DriverManager.getConnection(DB_URL,DB_USER,DB_PASS);
+    private DatabaseConnection() {
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//            Class.forName(DB_DRIVER);
+//            connection = DriverManager.getConnection(DB_URL,DB_USER,DB_PASS);
+
+
     }
 
-    public static DatabaseConnection getInstance() {
+    public static DatabaseConnection getInstance()  {
         if (instance == null) {
             instance = new DatabaseConnection();
         }
         return instance;
     }
 
-    public static ArrayList<AuditEntity> audit() throws SQLException {
-        ArrayList<AuditEntity> result = new ArrayList<>();
-
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("""
-                    select object_schema,
-                           object_name,
-                           sql_text
-                    from UNIFIED_AUDIT_TRAIL
-                    where current_user = 'UTILIZATOR' and UNIFIED_AUDIT_POLICIES = 'AUDIT_ALL_OPERATIONS'""");
-
-            while (rs.next()) {
-                AuditEntity entity = new AuditEntity(
-                        rs.getString("object_schema"),
-                        rs.getString("object_name"),
-                        rs.getString("sql_text").replace("\n", " ")
-                );
-
-                result.add(entity);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return result;
-    }
+//    public static ArrayList<AuditEntity> audit() {
+//        ArrayList<AuditEntity> result = new ArrayList<>();
+//
+//        try {
+//            Statement stmt = connection.createStatement();
+//            ResultSet rs = stmt.executeQuery("""
+//                    select object_schema,
+//                           object_name,
+//                           sql_text
+//                    from UNIFIED_AUDIT_TRAIL
+//                    where current_user = 'UTILIZATOR' and UNIFIED_AUDIT_POLICIES = 'AUDIT_ALL_OPERATIONS'""");
+//
+//            while (rs.next()) {
+//                AuditEntity entity = new AuditEntity(
+//                        rs.getString("object_schema"),
+//                        rs.getString("object_name"),
+//                        rs.getString("sql_text").replace("\n", " ")
+//                );
+//
+//                result.add(entity);
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return result;
+//    }
 
 }

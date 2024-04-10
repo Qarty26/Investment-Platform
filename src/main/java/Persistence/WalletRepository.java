@@ -19,6 +19,12 @@ public class WalletRepository implements GenericRepository<Wallet>{
 
     Vector<Wallet> wallets = new Vector<>();
 
+    public void erase()
+    {
+        wallets.clear();
+    }
+
+
     @Override
     public void add(Wallet wallet) throws InvalidDataException {
         if (wallet == null) {

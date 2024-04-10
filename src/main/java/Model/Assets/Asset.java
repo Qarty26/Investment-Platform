@@ -201,7 +201,6 @@ public class Asset implements ReadUpdateInterface {
         }
     }
 
-
     @Override
     public String toString() {
         return "Asset{" +

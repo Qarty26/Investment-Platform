@@ -32,6 +32,11 @@ public class AssetRepository implements GenericRepository<Asset> {
         return assets.get(index);
     }
 
+    public void erase()
+    {
+        assets.clear();
+    }
+
     @Override
     public ArrayList<Asset> getAll() {
         ArrayList<Asset> allAssets = new ArrayList<>(assets);

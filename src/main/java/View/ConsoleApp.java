@@ -9,9 +9,7 @@ import Persistence.*;
 import Service.Audit;
 import Service.DatabaseConnection;
 
-import javax.naming.OperationNotSupportedException;
-import javax.xml.crypto.Data;
-import java.lang.foreign.AddressLayout;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -35,7 +33,7 @@ public class ConsoleApp {
         walletRepository = new WalletRepository(db);
     }
 
-    public static ConsoleApp getInstance() {
+    public static ConsoleApp getInstance() throws SQLException, ClassNotFoundException {
         if (instance == null)
             instance = new ConsoleApp();
 
@@ -48,7 +46,7 @@ public class ConsoleApp {
         System.out.println("2. Read Functions");
         System.out.println("3. Update Functions");
         System.out.println("4. Delete Functions");
-        System.out.println("5. Other");
+        System.out.println("5. Other functions");
         System.out.println("9. Leave");
         System.out.print("Enter your choice: ");
     }
@@ -59,13 +57,15 @@ public class ConsoleApp {
         System.out.println("1. User");
         System.out.println("2. Exchange");
         System.out.println("3. Asset");
+        System.out.println("9. Leave");
     }
-
-    public void createFunctions() throws InvalidDataException {
+    public void createFunctions() throws InvalidDataException
+    {
         Scanner sc = new Scanner(System.in);
-        int option = -1;
+        int option;
+        Boolean inMenu = true;
 
-        while (true) {
+        while (inMenu) {
             printCreateFunctions();
             System.out.println("Enter option# ");
             option = sc.nextInt();
@@ -78,6 +78,7 @@ public class ConsoleApp {
                     u.read();
 
                     userRepository.add(u);
+                    break;
                 }
                 case 2:
                 {
@@ -85,6 +86,7 @@ public class ConsoleApp {
                     e.read();
 
                     exchangeRepository.add(e);
+                    break;
                 }
                 case 3:
                 {
@@ -92,41 +94,71 @@ public class ConsoleApp {
                     a.read();
 
                     assetRepository.add(a);
+                    break;
+                }
+                case 9:
+                {
+                    inMenu = false;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("Invalid option");
+                    break;
                 }
             }
         }
     }
-
     public void printUpdateFunctions()
     {
         System.out.println("1. User");
         System.out.println("2. Exchange");
         System.out.println("3. Asset");
+        System.out.println("9. Leave");
     }
-
-    public void updateFunctions() {
+    public void updateFunctions()
+    {
         Scanner sc = new Scanner(System.in);
-        int option = -1;
+        int option;
+        Boolean inMenu = true;
 
-        while (true) {
+        while (inMenu) {
             printUpdateFunctions();
             System.out.println("Enter option# ");
             option = sc.nextInt();
             sc.nextLine();
 
             switch (option) {
-                case 1 -> updateService(userRepository);
-                case 2 -> updateService(exchangeRepository);
-                case 3 -> updateService(assetRepository);
-                case 9 -> {
-                    return;
+                case 1:
+                {
+                    updateService(userRepository);
+                    break;
                 }
-                default -> System.out.println("~ INVALID OPTION");
+                case 2:
+                {
+                    updateService(exchangeRepository);
+                    break;
+                }
+                case 3:
+                {
+                    updateService(assetRepository);
+                    break;
+                }
+                case 9:
+                {
+                    inMenu = false;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("INVALID OPTION");
+                    break;
+                }
             }
         }
     }
-
-    public <T extends ReadUpdateInterface> void updateService(GenericRepository<T> repository) {
+    public <T extends ReadUpdateInterface> void updateService(GenericRepository<T> repository)
+    {
         try {
             System.out.println(Arrays.toString(repository.getAll().toArray()));
             System.out.println("Enter ID: ");
@@ -142,48 +174,63 @@ public class ConsoleApp {
             System.out.println(e);
         }
     }
-
     public void printReadFunctions()
     {
         System.out.println("1. User");
         System.out.println("2. Exchange");
         System.out.println("3. Asset");
+        System.out.println("9. Leave");
     }
-
-
-
-
-
     public void printDeleteFunctions()
     {
         System.out.println("1. User");
         System.out.println("2. Exchange");
         System.out.println("3. Asset");
+        System.out.println("9. Leave");
     }
-
-    public void deleteFunctions() throws InvalidDataException {
+    public void deleteFunctions() throws InvalidDataException
+    {
         Scanner sc = new Scanner(System.in);
-        int option = -1;
+        int option;
+        Boolean inMenu = true;
 
-        while (true) {
+        while (inMenu) {
             printDeleteFunctions();
-            System.out.println("Enter option# ");
+            System.out.println("Enter option");
             option = sc.nextInt();
             sc.nextLine();
 
             switch (option) {
-                case 1 -> deleteService(userRepository);
-                case 2 -> deleteService(exchangeRepository);
-                case 3 -> deleteService(assetRepository);
-                case 0 -> {
-                    return;
+                case 1:
+                {
+                    deleteService(userRepository);
+                    break;
                 }
-                default -> System.out.println("~ INVALID OPTION");
+                case 2:
+                {
+                    deleteService(exchangeRepository);
+                    break;
+                }
+                case 3:
+                {
+                    deleteService(assetRepository);
+                    break;
+                }
+                case 9:
+                {
+                    inMenu = false;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("INVALID OPTION");
+                    break;
+                }
             }
         }
     }
-
-    public <T extends ReadUpdateInterface> void deleteService(GenericRepository<T> repository) throws InvalidDataException {
+    public <T extends ReadUpdateInterface> void deleteService(GenericRepository<T> repository) throws InvalidDataException
+    {
 
             System.out.println(Arrays.toString(repository.getAll().toArray()));
             System.out.println("Enter ID: ");
@@ -194,9 +241,103 @@ public class ConsoleApp {
 
             repository.delete(entity);
     }
+    public void readFunctions()
+    {
+        Scanner sc = new Scanner(System.in);
+        int option;
+        Boolean inMenu = true;
+
+        while (inMenu) {
+            printReadFunctions();
+            System.out.println("Enter option# ");
+            option = sc.nextInt();
+            sc.nextLine();
+
+            switch (option) {
+                case 1:
+                {
+                    System.out.println(Arrays.toString(userRepository.getAll().toArray()));
+                    break;
+                }
+                case 2:
+                {
+                    System.out.println(Arrays.toString(exchangeRepository.getAll().toArray()));
+                    break;
+                }
+                case 3:
+                {
+                    System.out.println(Arrays.toString(assetRepository.getAll().toArray()));
+                    break;
+                }
+                case 9:
+                {
+                    inMenu = false;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("INVALID OPTION");
+                    break;
+                }
+            }
+        }
+    }
+
+    public void printOtherFunctions()
+    {
+        System.out.println("1. Enable seeders");
+        System.out.println("2. Erase all data");
+        System.out.println("3. Simulation mode");
+        System.out.println("9. Leave");
+    }
 
 
-    public void start() throws InvalidDataException {
+    public void otherFunctions()
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        Boolean inMenu = true;
+        while (inMenu)
+        {
+            printOtherFunctions();
+            int choice = scanner.nextInt();
+            switch(choice)
+            {
+                case 1:
+                {
+                    userRepository.seeder();
+                    exchangeRepository.seeder();
+                    break;
+                }
+                case 2:
+                {
+                    userRepository.erase();
+                    exchangeRepository.erase();
+                    assetRepository.erase();
+                    walletRepository.erase();
+                    break;
+                }
+                case 3:
+                {
+                    userRepository.simulation();
+                    break;
+                }
+                case 9:
+                {
+                    inMenu = false;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("INVALID OPTION");
+                    break;
+                }
+            }
+        }
+    }
+
+    public void start() throws InvalidDataException
+    {
         Scanner scanner = new Scanner(System.in);
 
         Boolean inMenu = true;
@@ -211,18 +352,20 @@ public class ConsoleApp {
                     break;
                 case 2:
                     System.out.println("Read Functions selected.");
-
+                    readFunctions();
                     break;
                 case 3:
                     System.out.println("Update Functions selected.");
-
+                    updateFunctions();
                     break;
                 case 4:
                     System.out.println("Delete Functions selected.");
-
+                    deleteFunctions();
                     break;
                 case 5:
                     System.out.println("Other selected.");
+                    otherFunctions();
+                    break;
                 case 9:
                     inMenu = false;
                     break;

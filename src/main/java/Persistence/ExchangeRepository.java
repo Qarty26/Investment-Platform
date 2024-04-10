@@ -1,7 +1,9 @@
 package Persistence;
 
 import Exceptions.InvalidDataException;
+import Model.Platforms.CryptoExchange;
 import Model.Platforms.Exchange;
+import Model.Platforms.StockExchange;
 import Service.DatabaseConnection;
 
 import java.util.ArrayList;
@@ -16,7 +18,29 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
         this.db = db;
     }
 
-    Vector<Exchange> exchanges = new Vector<>();
+    public Vector<Exchange> exchanges = new Vector<>();
+    public void seeder()
+    {
+        CryptoExchange a = new CryptoExchange("Binance", false, true, true, true, true);
+        CryptoExchange b = new CryptoExchange("Coinbase", true, true, true, false, true);
+        CryptoExchange c = new CryptoExchange("KuCoin", false, true, true, true, false);
+        StockExchange d = new StockExchange("TradeVille", false, true, 10, 18);
+        StockExchange e = new StockExchange("Trading212", true, true, 16, 22);
+        StockExchange f = new StockExchange("eToro", true, true, 14, 23);
+
+        exchanges.add(a);
+        exchanges.add(b);
+        exchanges.add(c);
+        exchanges.add(d);
+        exchanges.add(e);
+        exchanges.add(f);
+    }
+
+    public void erase()
+    {
+        exchanges.clear();
+    }
+
 
     @Override
     public void add(Exchange exchange) throws InvalidDataException {
