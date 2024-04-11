@@ -303,6 +303,7 @@ public class ConsoleApp {
         while (inMenu)
         {
             printOtherFunctions();
+            System.out.printf("Enter option: ");
             int choice = scanner.nextInt();
             switch(choice)
             {

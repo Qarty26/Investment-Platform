@@ -36,14 +36,14 @@ public class UserExchangeService {
 
         System.out.println("Select the index of an existing user");
         for(int i=0 ;i< userRepository.getSize(); i++)
-            System.out.println(i + userRepository.get(i).getNickName());
+            System.out.println(i + " " + userRepository.get(i).getNickName());
 
         int index = scanner.nextInt();
         User user = userRepository.get(index);
 
         System.out.println("Let's create an account, please select an exchange");
         for(int i=0 ;i< exchangeRepository.getSize(); i++)
-            System.out.println(i + exchangeRepository.get(i).getName());
+            System.out.println(i + " " + exchangeRepository.get(i).getName());
 
         index = scanner.nextInt();
         Exchange exchange = exchangeRepository.get(index);
@@ -70,6 +70,7 @@ public class UserExchangeService {
         while(inMenu)
         {
             walletRepository.printFunctions();
+            System.out.printf("Enter option: ");
             int choice = scanner.nextInt();
             switch(choice)
             {
@@ -78,8 +79,7 @@ public class UserExchangeService {
                     System.out.println("Enter the coin you want to trade");
                     scanner.nextLine();
                     String pair = scanner.nextLine();
-
-                    System.out.println(pair);
+                    
                     System.out.println("Do you want to BUY or SELL?");
                     String type = scanner.nextLine();
                     System.out.println("What is the size of your trade? You have " + account.getWallet().getBalance());
@@ -112,7 +112,7 @@ public class UserExchangeService {
                 }
                 case 3:
                 {
-                    System.out.println("Enter the coin you want to move to earn");
+                    System.out.println("Enter the coin you want to move to spot");
                     scanner.nextLine();
                     String pair = scanner.nextLine();
                     System.out.println("Enter the amount of cryptocurrency you want to move");
@@ -128,6 +128,7 @@ public class UserExchangeService {
                         break;
                     }
 
+                    pair = pair.toUpperCase();
                     account.getWallet().addToSpot(pair, reward);
                     System.out.println("Reward granted");
 
@@ -152,6 +153,7 @@ public class UserExchangeService {
                 case 7:
                 {
                     System.out.println(account.getWallet().getBalance());
+                    break;
                 }
                 case 8:
                 {

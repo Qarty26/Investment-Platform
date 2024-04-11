@@ -74,6 +74,7 @@ public class Wallet {
     //move asset from spot to earn
     public Boolean spotToEarn(String symbol, Double size){
 
+        symbol = symbol.toUpperCase();
         Integer position = checkExistence(spot,symbol);
         if(position == null)
             return false;
@@ -102,6 +103,7 @@ public class Wallet {
     //move asset from earn to spot
     public Boolean earnToSpot(String symbol, Double size){
 
+        symbol = symbol.toUpperCase();
         Integer position = checkExistence(earn,symbol);
         if(position == null)
             return false;
@@ -147,6 +149,8 @@ public class Wallet {
     //history is updated
     public Boolean Trade(String symbol, String type, Double cash) throws IOException {
 
+        symbol = symbol.toUpperCase();
+        type = type.toUpperCase();
 
         Asset asset = new Asset(symbol);
 
@@ -179,7 +183,7 @@ public class Wallet {
 
             Double size = cash / price;
             checkAllowedToMove(spot,symbol,size);
-            if(!updateBalance(cash))
+            if(!updateBalance(-cash))
                 return false;
             addToSpot(symbol,size);
 
