@@ -32,6 +32,7 @@ public class WalletRepository implements GenericRepository<Wallet>{
         System.out.println("4. Print spot");
         System.out.println("5. Print earn");
         System.out.println("6. Show transactions");
+        System.out.println("7. Show balance");
         System.out.println("9. Leave");
     }
 

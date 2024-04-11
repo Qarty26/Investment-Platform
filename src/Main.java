@@ -25,17 +25,6 @@ public class Main {
 
 
 
-//        System.out.println(users.get(0).getBalance());
-//        System.out.println(users.get(0).getAccounts().get(0).getWallet().getBalance());
-//        System.out.println("------");
-//        users.get(0).trasferBalanceToExchange(1000.0,"coinbase");
-//        System.out.println(users.get(0).getBalance());
-//        System.out.println(users.get(0).getAccounts().get(0).getWallet().getBalance());
-//        System.out.println("------");
-//        users.get(0).getAccounts().get(0).getWallet().updateBalance(200.0);
-//        users.get(0).getAccounts().get(0).getWallet().Trade("BTCUSDT","BUY", 100.0);
-//        System.out.println(users.get(0).getAccounts().get(0).getWallet().getBalance());
-
 
 
 

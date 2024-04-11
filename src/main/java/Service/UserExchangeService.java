@@ -65,7 +65,7 @@ public class UserExchangeService {
         user.trasferBalanceToExchange(cash,exchangeName);
         System.out.println("All good, now let's play with some crypto");
 
-        Boolean inMenu = true;
+        boolean inMenu = true;
         while(inMenu)
         {
             walletRepository.printFunctions();
@@ -97,10 +97,15 @@ public class UserExchangeService {
                     System.out.println("Enter the coin you want to move to earn");
                     scanner.nextLine();
                     String pair = scanner.nextLine();
-                    scanner.nextLine();
                     System.out.println("Enter the amount of cryptocurrency you want to move");
                     double size = scanner.nextDouble();
-                    account.getWallet().spotToEarn(pair,size);
+                    boolean success = account.getWallet().spotToEarn(pair,size);
+                    if(success)
+                        System.out.println("Move successful!");
+                    else
+                    {
+                        System.out.println("Please provide the right info!");
+                    }
 
                     break;
                 }
@@ -109,11 +114,19 @@ public class UserExchangeService {
                     System.out.println("Enter the coin you want to move to earn");
                     scanner.nextLine();
                     String pair = scanner.nextLine();
-                    scanner.nextLine();
                     System.out.println("Enter the amount of cryptocurrency you want to move");
                     double size = scanner.nextDouble();
                     double reward = (double) 10 /100 * size;
-                    account.getWallet().earnToSpot(pair,size);
+                    boolean success = account.getWallet().earnToSpot(pair,size);
+
+                    if(success)
+                        System.out.println("Move successful!");
+                    else
+                    {
+                        System.out.println("Please provide the right info!");
+                        break;
+                    }
+
                     account.getWallet().addToSpot(pair, reward);
                     System.out.println("Reward granted");
 
@@ -134,6 +147,10 @@ public class UserExchangeService {
                     account.getWallet().printTransactions();
                     break;
 
+                }
+                case 7:
+                {
+                    System.out.println(account.getWallet().getBalance());
                 }
                 case 9:
                 {

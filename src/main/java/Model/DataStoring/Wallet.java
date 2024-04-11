@@ -66,7 +66,7 @@ public class Wallet {
     public Boolean checkAllowedToMove(Vector<Pair<Asset,Double>> subWallet, String symbol, Double size){
 
         for(var x : subWallet)
-            if(x.getFirst().getName().equalsIgnoreCase(symbol) && x.getSecond() >= size)
+            if(x.getFirst().getSymbol().equalsIgnoreCase(symbol) && x.getSecond() >= size)
                 return true;
         return false;
     }
@@ -77,9 +77,13 @@ public class Wallet {
         Integer position = checkExistence(spot,symbol);
         if(position == null)
             return false;
+
         Boolean enoughSize = checkAllowedToMove(spot,symbol,size);
         if(!enoughSize)
+        {
+            System.out.println("nope");
             return false;
+        }
         spot.get(position).setSecond(  spot.get(position).getSecond() - size  );
 
         position = checkExistence(earn,symbol);
