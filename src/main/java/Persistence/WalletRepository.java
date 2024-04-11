@@ -24,6 +24,17 @@ public class WalletRepository implements GenericRepository<Wallet>{
         wallets.clear();
     }
 
+    public void printFunctions()
+    {
+        System.out.println("1. Trade");
+        System.out.println("2. Move to earn");
+        System.out.println("3. Move to spot");
+        System.out.println("4. Print spot");
+        System.out.println("5. Print earn");
+        System.out.println("6. Show transactions");
+        System.out.println("9. Leave");
+    }
+
 
     @Override
     public void add(Wallet wallet) throws InvalidDataException {

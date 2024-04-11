@@ -24,18 +24,6 @@ public class UserRepository implements GenericRepository<User> {
     }
 
 
-    //to be finished
-    public void simulation()
-    {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Select the index of an existing user");
-        for(int i = 0; i<users.size(); i++)
-            System.out.println(i + users.get(i).getNickName());
-        System.out.println("");
-        int index = scanner.nextInt();
-        User user = users.get(index);
-    }
-
     public void seeder()
     {
         User user1 = new User("Mincu Adrian", "skpha", "skpha13@gmail.com", 2000.0);

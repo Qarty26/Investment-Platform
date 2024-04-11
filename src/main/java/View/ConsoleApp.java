@@ -8,7 +8,9 @@ import Model.User.User;
 import Persistence.*;
 import Service.Audit;
 import Service.DatabaseConnection;
+import Service.UserExchangeService;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -22,6 +24,7 @@ public class ConsoleApp {
     private ExchangeRepository exchangeRepository;
     private UserRepository userRepository;
     private WalletRepository walletRepository;
+    private UserExchangeService userExchangeService;
 
 
     private ConsoleApp() {
@@ -31,6 +34,7 @@ public class ConsoleApp {
         exchangeRepository = new ExchangeRepository(db);
         userRepository = new UserRepository(db);
         walletRepository = new WalletRepository(db);
+        userExchangeService = new UserExchangeService(userRepository,exchangeRepository,walletRepository);
     }
 
     public static ConsoleApp getInstance() throws SQLException, ClassNotFoundException {
@@ -292,8 +296,7 @@ public class ConsoleApp {
     }
 
 
-    public void otherFunctions()
-    {
+    public void otherFunctions() throws InvalidDataException, IOException {
         Scanner scanner = new Scanner(System.in);
 
         Boolean inMenu = true;
@@ -319,7 +322,7 @@ public class ConsoleApp {
                 }
                 case 3:
                 {
-                    userRepository.simulation();
+                    userExchangeService.simulation();
                     break;
                 }
                 case 9:
@@ -336,8 +339,7 @@ public class ConsoleApp {
         }
     }
 
-    public void start() throws InvalidDataException
-    {
+    public void start() throws InvalidDataException, IOException {
         Scanner scanner = new Scanner(System.in);
 
         Boolean inMenu = true;

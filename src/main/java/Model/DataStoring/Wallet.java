@@ -32,6 +32,18 @@ public class Wallet {
         return true;
     }
 
+    public Vector<Pair<Asset, Double>> getSpot() {
+        return spot;
+    }
+
+    public Vector<Pair<Asset, Double>> getEarn() {
+        return earn;
+    }
+
+    public Vector<Transaction> getHistory() {
+        return history;
+    }
+
     //#################### CONSTRUCTORS ############################################
     public Wallet() {
         spot = new Vector<>();
@@ -50,7 +62,7 @@ public class Wallet {
         return null;
     }
 
-    //returns true if the symbol exists and it's size is bigger than the paramter
+    //returns true if the symbol exists, and it's size is bigger than the parameter
     public Boolean checkAllowedToMove(Vector<Pair<Asset,Double>> subWallet, String symbol, Double size){
 
         for(var x : subWallet)
@@ -176,6 +188,19 @@ public class Wallet {
         else return false;
 
     }
+
+    public void printTransactions()
+    {
+        for(var x: history)
+            System.out.println(x.toString());
+    }
+
+    public void printSubWallet(Vector<Pair<Asset,Double>> subWallet)
+    {
+        for(var x: subWallet)
+            System.out.println(x.getFirst().getSymbol() + " size: " + x.getSecond());
+    }
+
 
     @Override
     public String toString() {

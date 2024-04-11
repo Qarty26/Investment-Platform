@@ -17,7 +17,7 @@ public class Main {
     private static ConsoleApp consoleApp;
 
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException, InvalidDataException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, InvalidDataException, IOException {
 
         consoleApp = ConsoleApp.getInstance();
         consoleApp.start();
