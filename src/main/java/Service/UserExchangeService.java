@@ -65,6 +65,7 @@ public class UserExchangeService {
         user.trasferBalanceToExchange(cash,exchangeName);
         System.out.println("All good, now let's play with some crypto");
 
+        double initialBalance = account.getWallet().getBalance();
         boolean inMenu = true;
         while(inMenu)
         {
@@ -151,6 +152,13 @@ public class UserExchangeService {
                 case 7:
                 {
                     System.out.println(account.getWallet().getBalance());
+                }
+                case 8:
+                {
+                    double value = account.getWallet().getTotalValue() + account.getWallet().getBalance();
+                    double profit = value - initialBalance;
+                    System.out.println("Your unrealised profit: " + profit);
+                    break;
                 }
                 case 9:
                 {

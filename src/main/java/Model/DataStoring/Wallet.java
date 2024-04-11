@@ -205,6 +205,17 @@ public class Wallet {
             System.out.println(x.getFirst().getSymbol() + " size: " + x.getSecond());
     }
 
+    public double getTotalValue() throws IOException {
+        double value = 0.0;
+        for(var x : spot)
+            value+=x.getSecond() * x.getFirst().getPrice();
+
+        for(var x : earn)
+            value+=x.getSecond() * x.getFirst().getPrice();
+
+        return value;
+    }
+
 
     @Override
     public String toString() {
