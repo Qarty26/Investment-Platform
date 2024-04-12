@@ -4,12 +4,11 @@ import Exceptions.InvalidDataException;
 import Model.Assets.Asset;
 import Service.DatabaseConnection;
 
-import java.util.ArrayList;
-import java.util.Vector;
+import java.util.*;
 
 public class AssetRepository implements GenericRepository<Asset> {
 
-    private final Vector<Asset> assets = new Vector<>();
+    private final Set<Asset> assets = new TreeSet<>(Comparator.comparing(Asset::getSymbol));
     private final DatabaseConnection db;
 
     public AssetRepository(DatabaseConnection db) {
@@ -26,10 +25,7 @@ public class AssetRepository implements GenericRepository<Asset> {
 
     @Override
     public Asset get(int index) throws InvalidDataException {
-        if (index < 0 || index >= assets.size()) {
-            throw new InvalidDataException("Invalid index for getting asset.");
-        }
-        return assets.get(index);
+        throw new InvalidDataException("Current data set does not support this operation");
     }
 
     public void erase()
@@ -48,11 +44,10 @@ public class AssetRepository implements GenericRepository<Asset> {
         if (asset == null) {
             throw new InvalidDataException("Cannot update null asset.");
         }
-        int index = assets.indexOf(asset);
-        if (index == -1) {
+        if (!assets.remove(asset)) {
             throw new InvalidDataException("Asset not found for update.");
         }
-        assets.set(index, asset);
+        assets.add(asset);
     }
 
     @Override
