@@ -13,9 +13,9 @@ import java.util.Vector;
 public class Wallet {
 
     int idWallet;
-    final Vector<Pair<Asset,Double>> spot;
-    final Vector<Pair<Asset,Double>> earn;
-    final Vector<Transaction> history;
+    private Vector<Pair<Asset,Double>> spot;
+    private Vector<Pair<Asset,Double>> earn;
+    private Vector<Transaction> history;
     private Double balance;
 
 
@@ -52,6 +52,22 @@ public class Wallet {
 
     public void setIdWallet(int idWallet) {
         this.idWallet = idWallet;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public void setSpot(Vector<Pair<Asset, Double>> spot) {
+        this.spot = spot;
+    }
+
+    public void setEarn(Vector<Pair<Asset, Double>> earn) {
+        this.earn = earn;
+    }
+
+    public void setHistory(Vector<Transaction> history) {
+        this.history = history;
     }
 
     //#################### CONSTRUCTORS ############################################

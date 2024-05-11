@@ -157,6 +157,7 @@ public class Asset implements ReadUpdateInterface {
         System.out.println("Enter asset id: ");
         setIdAsset(sc.nextInt());
 
+        sc.nextLine();
         System.out.print("Enter asset name: ");
         setName(sc.nextLine());
 
