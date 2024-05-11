@@ -7,6 +7,7 @@ import java.util.Vector;
 
 public class User implements ReadUpdateInterface {
 
+    private int idUser;
     private String name;
     private String nickName;
     private String email;
@@ -59,6 +60,14 @@ public class User implements ReadUpdateInterface {
 
     public void addAccount(Account account) { this.accounts.add(account); }
 
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
     //#################### CONSTRUCTORS ############################################
 
 
@@ -70,7 +79,8 @@ public class User implements ReadUpdateInterface {
         this.accounts = new Vector<>();
     }
 
-    public User(String name, String nickName, String email, Double balance) {
+    public User(int id, String name, String nickName, String email, Double balance) {
+        this.idUser = id;
         this.name = name;
         this.nickName = nickName;
         this.email = email;
@@ -101,6 +111,9 @@ public class User implements ReadUpdateInterface {
     public void read() {
         Scanner sc = new Scanner(System.in);
 
+        System.out.print("Enter id: ");
+        setIdUser(sc.nextInt());
+
         System.out.print("Enter name: ");
         setName(sc.nextLine());
 
@@ -117,6 +130,12 @@ public class User implements ReadUpdateInterface {
     @Override
     public void update() {
         Scanner sc = new Scanner(System.in);
+
+        System.out.print("Do you want to update the id? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new id: ");
+            setIdUser(sc.nextInt());
+        }
 
         System.out.print("Do you want to update the name? (y/n): ");
         if (sc.nextLine().equalsIgnoreCase("y")) {
@@ -146,7 +165,8 @@ public class User implements ReadUpdateInterface {
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "idUser=" + idUser +
+                ", name='" + name + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", email='" + email + '\'' +
                 ", balance=" + balance +

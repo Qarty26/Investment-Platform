@@ -47,8 +47,8 @@ public class CryptoExchange extends Exchange implements ReadUpdateInterface {
         this.cardPlans = false;
     }
 
-    public CryptoExchange(String name, Boolean allowDemo, Boolean requireKYC,Boolean allowLeverage, Boolean ICOs, Boolean cardPlans) {
-        super(name,allowDemo,requireKYC);
+    public CryptoExchange(int id, String name, Boolean allowDemo, Boolean requireKYC,Boolean allowLeverage, Boolean ICOs, Boolean cardPlans) {
+        super(id, name,allowDemo,requireKYC);
         this.allowLeverage = allowLeverage;
         this.ICOs = ICOs;
         this.cardPlans = cardPlans;

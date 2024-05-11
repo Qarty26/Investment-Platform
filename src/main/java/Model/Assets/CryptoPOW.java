@@ -47,12 +47,12 @@ public class CryptoPOW extends Crypto implements ReadUpdateInterface {
         this.coinsPerBlock = 0;
     }
 
-    public CryptoPOW(String name, String symbol, String issuer, String industry, double price,
+    public CryptoPOW(int id, String name, String symbol, String issuer, String industry, double price,
                      double marketCapitalization, Boolean fixedTokens, Boolean smartContracts,
                      String blockchain, int tokensIssued, int transactionSeconds,
                      int cutRate, int cutAmount, double coinsPerBlock) {
 
-        super(name, symbol, issuer, industry, price, marketCapitalization, fixedTokens, smartContracts,
+        super(id, name, symbol, issuer, industry, price, marketCapitalization, fixedTokens, smartContracts,
               blockchain, tokensIssued, transactionSeconds);
         this.cutRate = cutRate;
         this.cutAmount = cutAmount;

@@ -66,11 +66,11 @@ public class Crypto extends Asset implements ReadUpdateInterface {
         this.transactionSeconds = 0;
     }
 
-    public Crypto(String name, String symbol, String issuer, String industry, double price,
+    public Crypto(int id, String name, String symbol, String issuer, String industry, double price,
                   double marketCapitalization, Boolean fixedTokens, Boolean smartContracts,
                   String blockchain, int tokensIssued, int transactionSeconds) {
 
-        super(name, symbol, issuer, industry, price, marketCapitalization);
+        super(id, name, symbol, issuer, industry, price, marketCapitalization);
         this.fixedTokens = fixedTokens;
         this.smartContracts = smartContracts;
         this.blockchain = blockchain;

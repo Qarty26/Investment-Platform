@@ -5,6 +5,7 @@ import Model.Platforms.Exchange;
 
 public class Account {
 
+    private int idAccount;
     private Wallet wallet;
     private Exchange exchange;
     //#################### SETTERS AND GETTERS ############################################
@@ -26,6 +27,14 @@ public class Account {
         this.exchange = exchange;
     }
 
+    public int getIdAccount() {
+        return idAccount;
+    }
+
+    public void setIdAccount(int idAccount) {
+        this.idAccount = idAccount;
+    }
+
     //#################### CONSTRUCTORS ############################################
 
 
@@ -34,7 +43,8 @@ public class Account {
         this.exchange = exchange;
     }
 
-    public Account(Wallet wallet, Exchange exchange) {
+    public Account(int id, Wallet wallet, Exchange exchange) {
+        this.idAccount = id;
         this.wallet = wallet;
         this.exchange = exchange;
     }
@@ -42,7 +52,8 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "wallet=" + wallet +
+                "idAccount=" + idAccount +
+                ", wallet=" + wallet +
                 ", exchange=" + exchange +
                 '}';
     }

@@ -26,9 +26,9 @@ public class UserRepository implements GenericRepository<User> {
 
     public void seeder()
     {
-        User user1 = new User("Mincu Adrian", "skpha", "skpha13@gmail.com", 2000.0);
-        User user2 = new User("Dogaru Mihai", "matoka", "matoka26@gmail.com", 1500.0);
-        User user3 = new User("Mircea Razvan", "qarty", "qarty99@gmail.com", 5000.0);
+        User user1 = new User(1,"Mincu Adrian", "skpha", "skpha13@gmail.com", 2000.0);
+        User user2 = new User(2,"Dogaru Mihai", "matoka", "matoka26@gmail.com", 1500.0);
+        User user3 = new User(3,"Mircea Razvan", "qarty", "qarty99@gmail.com", 5000.0);
 
         users.add(user1);
         users.add(user2);

@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Exchange implements ReadUpdateInterface {
 
+    protected int idExchange;
     protected String name;
     protected Boolean allowDemo;
     protected Boolean requireKYC;
@@ -35,14 +36,23 @@ public class Exchange implements ReadUpdateInterface {
         this.requireKYC = requireKYC;
     }
 
-//#################### CONSTRUCTORS ############################################
+    public int getIdExchange() {
+        return idExchange;
+    }
+
+    public void setIdExchange(int idExchange) {
+        this.idExchange = idExchange;
+    }
+
+    //#################### CONSTRUCTORS ############################################
 
     public Exchange() {
         this.name = "Unknown name";
         this.allowDemo = false;
         this.requireKYC = false;
     }
-    public Exchange(String name, Boolean allowDemo, Boolean requireKYC) {
+    public Exchange(int id, String name, Boolean allowDemo, Boolean requireKYC) {
+        this.idExchange = id;
         this.name = name;
         this.allowDemo = allowDemo;
         this.requireKYC = requireKYC;
@@ -52,6 +62,9 @@ public class Exchange implements ReadUpdateInterface {
     @Override
     public void read() {
         Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter id: ");
+        setIdExchange(sc.nextInt());
 
         System.out.print("Enter name: ");
         setName(sc.nextLine());

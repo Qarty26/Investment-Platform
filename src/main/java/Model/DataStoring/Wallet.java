@@ -12,6 +12,7 @@ import java.util.Vector;
 
 public class Wallet {
 
+    int idWallet;
     final Vector<Pair<Asset,Double>> spot;
     final Vector<Pair<Asset,Double>> earn;
     final Vector<Transaction> history;
@@ -42,6 +43,15 @@ public class Wallet {
 
     public Vector<Transaction> getHistory() {
         return history;
+    }
+
+
+    public int getIdWallet() {
+        return idWallet;
+    }
+
+    public void setIdWallet(int idWallet) {
+        this.idWallet = idWallet;
     }
 
     //#################### CONSTRUCTORS ############################################
@@ -220,11 +230,11 @@ public class Wallet {
         return value;
     }
 
-
     @Override
     public String toString() {
         return "Wallet{" +
-                "spot=" + spot +
+                "idWallet=" + idWallet +
+                ", spot=" + spot +
                 ", earn=" + earn +
                 ", history=" + history +
                 ", balance=" + balance +

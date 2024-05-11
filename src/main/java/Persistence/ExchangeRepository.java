@@ -21,12 +21,12 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
     public Vector<Exchange> exchanges = new Vector<>();
     public void seeder()
     {
-        CryptoExchange a = new CryptoExchange("Binance", false, true, true, true, true);
-        CryptoExchange b = new CryptoExchange("Coinbase", true, true, true, false, true);
-        CryptoExchange c = new CryptoExchange("KuCoin", false, true, true, true, false);
-        StockExchange d = new StockExchange("TradeVille", false, true, 10, 18);
-        StockExchange e = new StockExchange("Trading212", true, true, 16, 22);
-        StockExchange f = new StockExchange("eToro", true, true, 14, 23);
+        CryptoExchange a = new CryptoExchange(1,"Binance", false, true, true, true, true);
+        CryptoExchange b = new CryptoExchange(2,"Coinbase", true, true, true, false, true);
+        CryptoExchange c = new CryptoExchange(3,"KuCoin", false, true, true, true, false);
+        StockExchange d = new StockExchange(4,"TradeVille", false, true, 10, 18);
+        StockExchange e = new StockExchange(5,"Trading212", true, true, 16, 22);
+        StockExchange f = new StockExchange(6,"eToro", true, true, 14, 23);
 
         exchanges.add(a);
         exchanges.add(b);

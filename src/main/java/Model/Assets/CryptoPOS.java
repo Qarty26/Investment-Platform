@@ -44,11 +44,11 @@ public class CryptoPOS extends Crypto implements ReadUpdateInterface {
         this.stakingDuration = 0;
     }
 
-    public CryptoPOS(String name, String symbol, String issuer, String industry, double price,
+    public CryptoPOS(int id, String name, String symbol, String issuer, String industry, double price,
                      double marketCapitalization, Boolean fixedTokens, Boolean smartContracts,
                      String blockchain, int tokensIssued, int transactionSeconds,
                      double apr, double stakingDuration) {
-        super(name, symbol, issuer, industry, price, marketCapitalization, fixedTokens, smartContracts,
+        super(id,name, symbol, issuer, industry, price, marketCapitalization, fixedTokens, smartContracts,
               blockchain, tokensIssued, transactionSeconds);
         this.apr = apr;
         this.stakingDuration = stakingDuration;

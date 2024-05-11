@@ -27,9 +27,9 @@ public class ConsoleApp {
     private UserExchangeService userExchangeService;
 
 
-    private ConsoleApp() {
-        db = DatabaseConnection.getInstance();
-        audit = Audit.getInstance();
+    private ConsoleApp() throws SQLException, ClassNotFoundException {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        Audit.getInstance();
         assetRepository = new AssetRepository(db);
         exchangeRepository = new ExchangeRepository(db);
         userRepository = new UserRepository(db);

@@ -4,6 +4,8 @@ import Exceptions.InvalidDataException;
 import Model.Assets.Asset;
 import Service.DatabaseConnection;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 public class AssetRepository implements GenericRepository<Asset> {
@@ -15,12 +17,26 @@ public class AssetRepository implements GenericRepository<Asset> {
         this.db = db;
     }
 
-    @Override
-    public void add(Asset asset) throws InvalidDataException {
+
+    public void add_old(Asset asset) throws InvalidDataException {
         if (asset == null) {
             throw new InvalidDataException("Cannot add null asset.");
         }
         assets.add(asset);
+    }
+
+    @Override
+    public void add(Asset entity){
+        String sql = """
+                        INSERT INTO Asset (idAsset, name, symbol, issuer, industry, marketCapitalization, price)
+                        VALUES (?, ?, ?, ?, ?, ?, ?);
+                     """;
+        try {
+            PreparedStatement stmt = db.connection.prepareStatement(sql);
+            stmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -13,6 +13,8 @@ import org.json.JSONObject;
 
 public class Asset implements ReadUpdateInterface {
 
+    protected int idAsset;
+
     protected String name;
     protected String symbol;
     protected String issuer;
@@ -66,10 +68,20 @@ public class Asset implements ReadUpdateInterface {
         this.marketCapitalization = marketCapitalization;
     }
 
-    //#################### CONSTRUCTORS ############################################
+    public int getIdAsset() {
+        return idAsset;
+    }
+
+    public void setIdAsset(int idAsset) {
+        this.idAsset = idAsset;
+    }
+
+
+//#################### CONSTRUCTORS ############################################
 
 
     public Asset() {
+        this.idAsset = 0;
         this.name = "-";
         this.symbol = "-";
         this.issuer = "-";
@@ -79,6 +91,7 @@ public class Asset implements ReadUpdateInterface {
     }
 
     public Asset(String symbol) {
+        this.idAsset = 0;
         this.name = "-";
         this.symbol = symbol;
         this.issuer = "-";
@@ -87,9 +100,9 @@ public class Asset implements ReadUpdateInterface {
         this.marketCapitalization = 0;
     }
 
-    public Asset(String name, String symbol, String issuer, String industry, double price,
+    public Asset(int idAsset,String name, String symbol, String issuer, String industry, double price,
                  double marketCapitalization) {
-
+        this.idAsset = idAsset;
         this.name = name;
         this.symbol = symbol;
         this.issuer = issuer;
@@ -141,6 +154,9 @@ public class Asset implements ReadUpdateInterface {
     public void read() {
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Enter asset id: ");
+        setIdAsset(sc.nextInt());
+
         System.out.print("Enter asset name: ");
         setName(sc.nextLine());
 
@@ -163,6 +179,12 @@ public class Asset implements ReadUpdateInterface {
     @Override
     public void update() {
         Scanner sc = new Scanner(System.in);
+
+        System.out.print("Do you want to update id? (y/n): ");
+        if (sc.nextLine().equalsIgnoreCase("y")) {
+            System.out.print("Enter new id: ");
+            setIdAsset(sc.nextInt());
+        }
 
         System.out.print("Do you want to update name? (y/n): ");
         if (sc.nextLine().equalsIgnoreCase("y")) {
@@ -204,7 +226,8 @@ public class Asset implements ReadUpdateInterface {
     @Override
     public String toString() {
         return "Asset{" +
-                "name='" + name + '\'' +
+                "idAsset=" + idAsset +
+                ", name='" + name + '\'' +
                 ", symbol='" + symbol + '\'' +
                 ", issuer='" + issuer + '\'' +
                 ", industry='" + industry + '\'' +

@@ -34,8 +34,8 @@ public class StockExchange extends Exchange implements ReadUpdateInterface {
         this.closeHour = 0;
     }
 
-    public StockExchange(String name, Boolean allowDemo, Boolean requireKYC, int openingHour, int closeHour) {
-        super(name, allowDemo, requireKYC);
+    public StockExchange(int id, String name, Boolean allowDemo, Boolean requireKYC, int openingHour, int closeHour) {
+        super(id,name, allowDemo, requireKYC);
         this.openingHour = openingHour;
         this.closeHour = closeHour;
     }

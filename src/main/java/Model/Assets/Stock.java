@@ -6,7 +6,6 @@ import Model.Platforms.StockExchange;
 import java.util.Scanner;
 
 public class Stock extends Asset implements ReadUpdateInterface {
-
     private String market;
     private double dividendRate;
 
@@ -35,11 +34,11 @@ public class Stock extends Asset implements ReadUpdateInterface {
         this.dividendRate = 0;
     }
 
-    public Stock(String market, double dividendRate, StockExchange exchange) {
+    public Stock(int idAsset, String name, String symbol, String issuer, String industry, double price, double marketCapitalization, String market, double dividendRate) {
+        super(idAsset, name, symbol, issuer, industry, price, marketCapitalization);
         this.market = market;
         this.dividendRate = dividendRate;
     }
-
 
     @Override
     public void read() {

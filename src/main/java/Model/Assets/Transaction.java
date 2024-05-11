@@ -1,12 +1,22 @@
 package Model.Assets;
 
 public class Transaction {
+    int idTransaction;
     private String symbol;
     private double price;
     private double amount;
     private String type;
 
     //#################### SETTERS AND GETTERS ############################################
+
+    public int getIdTransaction() {
+        return idTransaction;
+    }
+
+    public void setIdTransaction(int idTransaction) {
+        this.idTransaction = idTransaction;
+    }
+
     public String getSymbol() {
         return symbol;
     }
@@ -41,14 +51,15 @@ public class Transaction {
 
     //#################### CONSTRUCTORS ############################################
     public Transaction() {
+        this.idTransaction = 0;
         this.symbol = "-";
         this.price = 0;
         this.amount = 0;
         this.type = null;
     }
 
-    public Transaction(int idTransaction,String symbol, double price, double amount,String type) {
-
+    public Transaction(int idTransaction, String symbol, double price, double amount, String type) {
+        this.idTransaction = idTransaction;
         this.symbol = symbol;
         this.price = price;
         this.amount = amount;
@@ -58,7 +69,8 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                "symbol='" + symbol + '\'' +
+                "idTransaction=" + idTransaction +
+                ", symbol='" + symbol + '\'' +
                 ", price=" + price +
                 ", amount=" + amount +
                 ", type='" + type + '\'' +
