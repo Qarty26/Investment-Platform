@@ -13,14 +13,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 public class WalletRepository implements GenericRepository<Wallet>{
 
     private final DatabaseConnection db;
+    public AssetRepository assetRepository;
 
-    public WalletRepository(DatabaseConnection db) {
+    public WalletRepository(DatabaseConnection db, AssetRepository assetRepository) {
         this.db = db;
+        this.assetRepository = assetRepository;
     }
 
     Vector<Wallet> wallets = new Vector<>();
@@ -103,54 +107,16 @@ public class WalletRepository implements GenericRepository<Wallet>{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        saveVector(wallet.getSpot(), "Spot", wallet.getIdWallet());
-        saveVector(wallet.getEarn(), "Earn", wallet.getIdWallet());
-        saveHistory(wallet.getHistory(), wallet.getIdWallet());
     }
 
-    private void saveVector(Vector<Pair<Asset, Double>> vector, String tableName, int walletId) {
-        String insertSql = "INSERT INTO " + tableName + " (idAsset, sizee, idWallet) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = db.connection.prepareStatement(insertSql)) {
-            for (Pair<Asset, Double> pair : vector) {
-                stmt.setInt(1, pair.getFirst().getIdAsset()); // Assuming getIdAsset exists in Asset class
-                stmt.setDouble(2, pair.getSecond());
-                stmt.setInt(3, walletId);
-                stmt.addBatch();
-            }
-            stmt.executeBatch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void saveHistory(Vector<Transaction> history, int walletId) {
-        String insertSql = "INSERT INTO History (idTransaction, idWallet) VALUES (?, ?)";
-        try (PreparedStatement stmt = db.connection.prepareStatement(insertSql)) {
-            for (Transaction transaction : history) {
-                stmt.setInt(1, transaction.getIdTransaction());
-                stmt.setInt(2, walletId);
-                stmt.addBatch();
-            }
-            stmt.executeBatch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Wallet getWallet(int walletId) {
-        String selectWalletSql = "SELECT * FROM Wallet WHERE idWallet = ?";
-        try (PreparedStatement stmt = db.connection.prepareStatement(selectWalletSql)) {
-            stmt.setInt(1, walletId);
+    public Wallet getWallet(int id){
+        String sql = "SELECT * FROM Wallet WHERE idWallet = ?";
+        try {
+            PreparedStatement stmt = db.connection.prepareStatement(sql);
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                Wallet wallet = new Wallet();
-                wallet.setIdWallet(rs.getInt("idWallet"));
-                wallet.setBalance(rs.getDouble("balance"));
-                wallet.setSpot(getVector("Spot", walletId));
-                wallet.setEarn(getVector("Earn", walletId));
-                wallet.setHistory(getHistory(walletId));
-                return wallet;
+                return extractWalletFromResultSet(rs);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -158,45 +124,135 @@ public class WalletRepository implements GenericRepository<Wallet>{
         return null;
     }
 
-    private Vector<Pair<Asset, Double>> getVector(String tableName, int walletId) {
-        Vector<Pair<Asset, Double>> vector = new Vector<>();
-        String selectSql = "SELECT * FROM " + tableName + " WHERE idWallet = ?";
-        try (PreparedStatement stmt = db.connection.prepareStatement(selectSql)) {
-            stmt.setInt(1, walletId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                int assetId = rs.getInt("idAsset");
-                double size = rs.getDouble("sizee");
-/*                Asset asset = get(assetId);
-                if (asset != null) {
-                    Pair<Asset, Double> pair = new Pair<>(asset, size);
-                    vector.add(pair);
-                }*/
-            }
+    public void deleteWallet(Wallet entity)
+    {
+        String sql = "DELETE FROM Wallet WHERE idWallet = ?";
+        try {
+            PreparedStatement stmt = db.connection.prepareStatement(sql);
+            stmt.setInt(1, entity.getIdWallet());
+            stmt.executeUpdate();
+
+
+            deleteSubWallet("Spot", entity.getIdWallet());
+            deleteSubWallet("Earn", entity.getIdWallet());
+            deleteSubWallet("History", entity.getIdWallet());
+
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return vector;
     }
 
-    private Vector<Transaction> getHistory(int walletId) {
-        Vector<Transaction> history = new Vector<>();
-        String selectSql = "SELECT * FROM History WHERE idWallet = ?";
-        try (PreparedStatement stmt = db.connection.prepareStatement(selectSql)) {
-            stmt.setInt(1, walletId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                int transactionId = rs.getInt("idTransaction");
+    public void deleteSubWallet(String subWallet, int idWallet)
+    {
+        if(!(subWallet == "Spot" || subWallet == "Earn" || subWallet == "History"))
+        {
+            System.out.println("Unable to delete subWallet");
+            return;
+        }
 
-/*                Transaction transaction = get(transactionId);
-                history.add(transaction);*/
-            }
+        String sql = "DELETE FROM " + subWallet + " WHERE idWallet  = ?";
+        try {
+            PreparedStatement stmt = db.connection.prepareStatement(sql);
+            stmt.setInt(1, idWallet);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return history;
+
+    }
+
+    private Wallet extractWalletFromResultSet(ResultSet rs) throws SQLException {
+        return new Wallet(
+                rs.getInt("idWallet"),
+                rs.getDouble("balance")
+        );
     }
 
 
+    public void updateWallet(Wallet entity) throws InvalidDataException {
+        String sql = "UPDATE Wallet SET balance = ? WHERE idWallet = ?";
+        try {
+            PreparedStatement stmt = db.connection.prepareStatement(sql);
+            stmt.setDouble(1, entity.getBalance());
+            stmt.setInt(2, entity.getIdWallet());
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void fetchFromDb() throws SQLException, InvalidDataException {
+
+        try
+        {
+            String sql = "SELECT w.idWallet, w.balance, s.idSpot, s.idAsset, s.sizee AS spotSize, e.idSpot AS earnIdSpot, e.idAsset AS earnIdAsset, e.sizee AS earnSize " +
+                    "FROM Wallet w " +
+                    "LEFT JOIN Spot s ON w.idWallet = s.idWallet " +
+                    "LEFT JOIN Earn e ON w.idWallet = e.idWallet " +
+                    "LEFT JOIN History h ON w.idWallet = h.idWallet";
+
+
+            PreparedStatement stmt = db.connection.prepareStatement(sql);
+            ResultSet resultSet = stmt.executeQuery();
+
+            Map<Integer, Wallet> walletMap = new HashMap<>();
+
+            while (resultSet.next()) {
+                int idWallet = resultSet.getInt("idWallet");
+                double balance = resultSet.getDouble("balance");
+
+                if (!walletMap.containsKey(idWallet)) {
+                    Wallet wallet = new Wallet();
+                    wallet.setIdWallet(idWallet);
+                    wallet.setBalance(balance);
+                    wallet.setSpot(new Vector<>());
+                    wallet.setEarn(new Vector<>());
+                    wallet.setHistory(new Vector<>());
+                    walletMap.put(idWallet, wallet);
+                }
+
+                // Process Spot details
+                int idSpot = resultSet.getInt("idSpot");
+                int spotIdAsset = resultSet.getInt("idAsset");
+                double spotSize = resultSet.getDouble("spotSize");
+
+                if (idSpot != 0) {
+                    Asset spotAsset = assetRepository.get(spotIdAsset);
+                    Pair<Asset, Double> spotEntry = new Pair<>(spotAsset, spotSize);
+                    walletMap.get(idWallet).getSpot().add(spotEntry);
+                }
+
+                int earnIdSpot = resultSet.getInt("earnIdSpot");
+                int earnIdAsset = resultSet.getInt("earnIdAsset");
+                double earnSize = resultSet.getDouble("earnSize");
+
+                if (earnIdSpot != 0) {
+                    Asset earnAsset = assetRepository.get(earnIdAsset);
+                    Pair<Asset, Double> earnEntry = new Pair<>(earnAsset, earnSize);
+                    walletMap.get(idWallet).getEarn().add(earnEntry);
+                }
+
+                // You can similarly process History details here if needed
+            }
+
+
+            wallets.addAll(walletMap.values());
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle or log the exception appropriately
+        }
+
+    }
 
 }
+
+
+
+
+
+
+
+

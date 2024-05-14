@@ -78,6 +78,15 @@ public class Wallet {
         balance = 0.0;
     }
 
+    public Wallet(int id, double balance)
+    {
+        this.idWallet = id;
+        this.balance = balance;
+        this.spot = new Vector<>();
+        this.earn = new Vector<>();
+        this.history = new Vector<>();
+    }
+
     //returns the index where it was found
     public Integer checkExistence(Vector<Pair<Asset,Double>> subWallet, String asset){
 

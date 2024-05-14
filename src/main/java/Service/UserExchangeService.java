@@ -1,5 +1,6 @@
 package Service;
 import Exceptions.InvalidDataException;
+import Model.DataStoring.Wallet;
 import Model.Platforms.Exchange;
 import Model.User.Account;
 import Model.User.User;
@@ -19,6 +20,8 @@ public class UserExchangeService {
         this.exchangeRepository = exchangeRepository;
         this.walletRepository = walletRepository;
     }
+
+
     public void simulation() throws InvalidDataException, IOException {
 
 

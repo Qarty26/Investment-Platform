@@ -33,7 +33,7 @@ public class ConsoleApp {
         assetRepository = new AssetRepository(db);
         exchangeRepository = new ExchangeRepository(db);
         userRepository = new UserRepository(db);
-        walletRepository = new WalletRepository(db);
+        walletRepository = new WalletRepository(db,assetRepository);
         userExchangeService = new UserExchangeService(userRepository,exchangeRepository,walletRepository);
     }
 

@@ -13,6 +13,8 @@ VALUES (4, 'Microsoft Corporation', 'MSFT', 'Microsoft', 'Technology', 220000000
 INSERT INTO Asset (idAsset, name, symbol, issuer, industry, marketCapitalization, price)
 VALUES (5, 'Alphabet Inc. Class A', 'GOOGL', 'Alphabet', 'Technology', 1800000000000, 2770.10);
 
+select * from asset;
+
 
 INSERT INTO Crypto (idAsset, name, symbol, issuer, industry, marketCapitalization, price, fixedTokens, smartContracts, blockchain, tokensIssued, transactionSeconds)
 VALUES (101, 'Bitcoin', 'BTC', 'Bitcoin Foundation', 'Cryptocurrency', 950000000000, 59874.56, 1, 1, 'Bitcoin', 18750000, 600);
