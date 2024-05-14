@@ -22,9 +22,9 @@ public class WalletRepository implements GenericRepository<Wallet>{
     private final DatabaseConnection db;
     public AssetRepository assetRepository;
 
-    public WalletRepository(DatabaseConnection db, AssetRepository assetRepository) {
+    public WalletRepository(DatabaseConnection db) {
         this.db = db;
-        this.assetRepository = assetRepository;
+        this.assetRepository = new AssetRepository(db);
     }
 
     Vector<Wallet> wallets = new Vector<>();

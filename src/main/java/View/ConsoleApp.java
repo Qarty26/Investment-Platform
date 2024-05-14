@@ -2,6 +2,7 @@ package View;
 
 import Exceptions.InvalidDataException;
 import Model.Assets.Asset;
+import Model.Assets.CryptoPOS;
 import Model.Helpers.ReadUpdateInterface;
 import Model.Platforms.Exchange;
 import Model.User.User;
@@ -20,10 +21,23 @@ public class ConsoleApp {
     private static ConsoleApp instance;
     private DatabaseConnection db;
     private Audit audit;
-    private AssetRepository assetRepository;
-    private ExchangeRepository exchangeRepository;
     private UserRepository userRepository;
+    private AccountRepository accountRepository;
+
     private WalletRepository walletRepository;
+
+    private ExchangeRepository exchangeRepository;
+    private CryptoExchangeRepository cryptoExchangeRepository;
+    private StockExchangeRepository stockExchangeRepository;
+
+
+    private AssetRepository assetRepository;
+    private CryptoRepository cryptoRepository;
+    private CryptoPOSRepository cryptoPOSRepository;
+    private CryptoPOWRepository cryptoPOWRepository;
+    private StockRepository stockRepository;
+    private TransactionRepository transactionRepository;
+
     private UserExchangeService userExchangeService;
 
 
@@ -33,7 +47,7 @@ public class ConsoleApp {
         assetRepository = new AssetRepository(db);
         exchangeRepository = new ExchangeRepository(db);
         userRepository = new UserRepository(db);
-        walletRepository = new WalletRepository(db,assetRepository);
+        walletRepository = new WalletRepository(db);
         userExchangeService = new UserExchangeService(userRepository,exchangeRepository,walletRepository);
     }
 

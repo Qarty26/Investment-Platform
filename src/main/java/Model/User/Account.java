@@ -15,6 +15,7 @@ public class Account {
         return wallet;
     }
 
+
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
     }
