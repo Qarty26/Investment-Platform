@@ -117,9 +117,12 @@ public class User implements ReadUpdateInterface {
         System.out.print("Enter name: ");
         setName(sc.nextLine());
 
+        sc.nextLine();
+
         System.out.print("Enter nickname: ");
         setNickName(sc.nextLine());
 
+        sc.nextLine();
         System.out.print("Enter email: ");
         setEmail(sc.nextLine());
 

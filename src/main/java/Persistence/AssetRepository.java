@@ -36,7 +36,7 @@ public class AssetRepository implements GenericRepository<Asset> {
     public void add(Asset entity){
         String sql = """
                         INSERT INTO Asset (idAsset, name, symbol, issuer, industry, marketCapitalization, price)
-                        VALUES (?, ?, ?, ?, ?, ?, ?);
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
                      """;
         try {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
@@ -159,13 +159,12 @@ public class AssetRepository implements GenericRepository<Asset> {
             stmt.setString(3, entity.getSymbol());
             stmt.setString(4, entity.getIssuer());
             stmt.setString(5, entity.getIndustry());
-            stmt.setDouble(6,entity.getPrice());
+            stmt.setDouble(6,entity.getPricee());
             stmt.setDouble(7, entity.getMarketCapitalization());
+            stmt.setInt(8, entity.getIdAsset());
             stmt.executeUpdate();
             audit.logOperation("update");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
