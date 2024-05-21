@@ -4,6 +4,7 @@ import Exceptions.InvalidDataException;
 import Model.DataStoring.Wallet;
 import Model.Platforms.Exchange;
 import Model.User.Account;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.sql.PreparedStatement;
@@ -13,9 +14,12 @@ import java.sql.ResultSet;
 public class AccountRepository {
 
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public AccountRepository(DatabaseConnection db) {
+
+    public AccountRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
     public void add(Account account, int idUser) {
@@ -27,6 +31,7 @@ public class AccountRepository {
             stmt.setInt(3, account.getExchange().getIdExchange());
             stmt.setInt(4, account.getWallet().getIdWallet());
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException e) {
             throw new RuntimeException("Error saving Account to database", e);
         }
@@ -46,12 +51,12 @@ public class AccountRepository {
                 int idWallet = rs.getInt("idWallet");
 
                 // Fetch associated Wallet and Exchange from database
-                WalletRepository walletRepository = new WalletRepository(db);
+                WalletRepository walletRepository = new WalletRepository(db,audit);
                 Wallet wallet = walletRepository.getWallet(idWallet);
 
-                ExchangeRepository exchangeRepository = new ExchangeRepository(db);
+                ExchangeRepository exchangeRepository = new ExchangeRepository(db,audit);
                 Exchange exchange = exchangeRepository.get(idExchange);
-
+                audit.logOperation("get");
                 return new Account(idAccount, wallet, exchange);
             }
         } catch (SQLException e) {
@@ -70,6 +75,7 @@ public class AccountRepository {
             stmt.setInt(2, account.getWallet().getIdWallet());
             stmt.setInt(3, account.getIdAccount());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException e) {
             throw new RuntimeException("Error updating Account in database", e);
         }
@@ -82,6 +88,7 @@ public class AccountRepository {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, accountId);
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting Account from database", e);
         }

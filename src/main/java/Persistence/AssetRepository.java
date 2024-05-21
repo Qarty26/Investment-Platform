@@ -2,6 +2,7 @@ package Persistence;
 
 import Exceptions.InvalidDataException;
 import Model.Assets.Asset;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.io.IOException;
@@ -14,9 +15,13 @@ public class AssetRepository implements GenericRepository<Asset> {
 
     private final Set<Asset> assets = new TreeSet<>(Comparator.comparing(Asset::getSymbol));
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public AssetRepository(DatabaseConnection db) {
+
+
+    public AssetRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
 
@@ -41,11 +46,10 @@ public class AssetRepository implements GenericRepository<Asset> {
             stmt.setString(4, entity.getIssuer());
             stmt.setString(5, entity.getIndustry());
             stmt.setDouble(6, entity.getMarketCapitalization());
-            stmt.setDouble(7, entity.getPrice());
+            stmt.setDouble(7, entity.getPricee());
             stmt.execute();
+            audit.logOperation("add");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -68,6 +72,7 @@ public class AssetRepository implements GenericRepository<Asset> {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, index);
             ResultSet rs = stmt.executeQuery();
+            audit.logOperation("get");
 
             if (rs.next()) {
                 return new Asset(
@@ -124,6 +129,7 @@ public class AssetRepository implements GenericRepository<Asset> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        audit.logOperation("get");
         return allAssets;
     }
 
@@ -141,7 +147,7 @@ public class AssetRepository implements GenericRepository<Asset> {
     @Override
     public void update(Asset entity) throws InvalidDataException {
         String sql = """
-                     UPDATE asset
+                     UPDATE Asset
                      SET idAsset = ?, name = ?, symbol = ?, issuer = ?, industry = ?, price = ?, marketCapitalization = ?
                      WHERE idAsset = ?
                      """;
@@ -156,6 +162,7 @@ public class AssetRepository implements GenericRepository<Asset> {
             stmt.setDouble(6,entity.getPrice());
             stmt.setDouble(7, entity.getMarketCapitalization());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -183,6 +190,7 @@ public class AssetRepository implements GenericRepository<Asset> {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdAsset());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -3,6 +3,7 @@ package Persistence;
 import Exceptions.InvalidDataException;
 
 import Model.Assets.CryptoPOS;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.io.IOException;
@@ -14,9 +15,11 @@ import java.util.ArrayList;
 public class CryptoPOSRepository implements GenericRepository<CryptoPOS> {
 
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public CryptoPOSRepository(DatabaseConnection db) {
+    public CryptoPOSRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class CryptoPOSRepository implements GenericRepository<CryptoPOS> {
             stmt.setDouble(14, entity.getMinStakeRequirement());
             stmt.setDouble(15, entity.getStakingDuration());
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -54,6 +58,7 @@ public class CryptoPOSRepository implements GenericRepository<CryptoPOS> {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                audit.logOperation("get");
                 return extractCryptoPOSFromResultSet(rs);
             }
         } catch (SQLException e) {
@@ -76,6 +81,7 @@ public class CryptoPOSRepository implements GenericRepository<CryptoPOS> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        audit.logOperation("get");
         return cryptoPOSList;
     }
 
@@ -100,6 +106,7 @@ public class CryptoPOSRepository implements GenericRepository<CryptoPOS> {
             stmt.setDouble(14, entity.getStakingDuration());
             stmt.setInt(15, entity.getIdAsset());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -112,6 +119,7 @@ public class CryptoPOSRepository implements GenericRepository<CryptoPOS> {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdAsset());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

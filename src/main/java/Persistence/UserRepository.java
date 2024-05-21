@@ -2,6 +2,7 @@ package Persistence;
 
 import Exceptions.InvalidDataException;
 import Model.User.User;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.sql.PreparedStatement;
@@ -15,9 +16,11 @@ public class UserRepository implements GenericRepository<User> {
 
     private final Vector<User> users = new Vector<>();
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public UserRepository(DatabaseConnection db) {
+    public UserRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
 
@@ -96,6 +99,7 @@ public class UserRepository implements GenericRepository<User> {
             stmt.setString(4, user.getEmail());
             stmt.setDouble(5, user.getBalance());
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException e) {
             throw new RuntimeException("Error saving User to database", e);
         }
@@ -113,9 +117,10 @@ public class UserRepository implements GenericRepository<User> {
             if (rs.next()) {
                 int idUser = rs.getInt("idUser");
                 String name = rs.getString("name");
-                String nickName = rs.getString("nickname");
+                String nickName = rs.getString("nickName");
                 String email = rs.getString("email");
                 Double balance = rs.getDouble("balance");
+                audit.logOperation("get");
                 return new User(idUser, name, nickName, email, balance);
             }
         } catch (SQLException e) {
@@ -135,6 +140,7 @@ public class UserRepository implements GenericRepository<User> {
             stmt.setDouble(4, user.getBalance());
             stmt.setInt(5, user.getIdUser());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException e) {
             throw new RuntimeException("Error updating User in database", e);
         }
@@ -148,6 +154,7 @@ public class UserRepository implements GenericRepository<User> {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdUser());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting User from database", e);
         }
@@ -173,6 +180,7 @@ public class UserRepository implements GenericRepository<User> {
         } catch (SQLException e) {
             throw new RuntimeException("Error fetching Users from database", e);
         }
+        audit.logOperation("get");
         return users;
     }
 }

@@ -55,6 +55,9 @@ public class Asset implements ReadUpdateInterface {
     public void setIndustry(String industry) {
         this.industry = industry;
     }
+    public double getPricee() {
+        return price;
+    }
 
     public void setPrice(double price) {
         this.price = price;

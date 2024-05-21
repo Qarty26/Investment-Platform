@@ -2,6 +2,7 @@ package Persistence;
 
 import Exceptions.InvalidDataException;
 import Model.Assets.CryptoPOW;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.io.IOException;
@@ -13,9 +14,11 @@ import java.util.ArrayList;
 public class CryptoPOWRepository implements GenericRepository<CryptoPOW> {
 
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public CryptoPOWRepository(DatabaseConnection db) {
+    public CryptoPOWRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
     @Override
@@ -40,6 +43,7 @@ public class CryptoPOWRepository implements GenericRepository<CryptoPOW> {
             stmt.setInt(14, entity.getCutAmount());
             stmt.setDouble(15, entity.getCoinsPerBlock());
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -53,6 +57,7 @@ public class CryptoPOWRepository implements GenericRepository<CryptoPOW> {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                audit.logOperation("get");
                 return extractCryptoPOWFromResultSet(rs);
             }
         } catch (SQLException e) {
@@ -75,6 +80,7 @@ public class CryptoPOWRepository implements GenericRepository<CryptoPOW> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        audit.logOperation("get");
         return cryptoPOWList;
     }
 
@@ -99,6 +105,7 @@ public class CryptoPOWRepository implements GenericRepository<CryptoPOW> {
             stmt.setDouble(14, entity.getCoinsPerBlock());
             stmt.setInt(15, entity.getIdAsset());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -111,6 +118,7 @@ public class CryptoPOWRepository implements GenericRepository<CryptoPOW> {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdAsset());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

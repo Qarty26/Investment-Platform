@@ -1,6 +1,7 @@
 package Persistence;
 
 import Exceptions.InvalidDataException;
+import Service.Audit;
 import Service.DatabaseConnection;
 import Model.Platforms.StockExchange;
 import java.sql.PreparedStatement;
@@ -11,9 +12,11 @@ import java.util.ArrayList;
 public class StockExchangeRepository implements GenericRepository<StockExchange> {
 
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public StockExchangeRepository(DatabaseConnection db) {
+    public StockExchangeRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
     @Override
@@ -28,6 +31,7 @@ public class StockExchangeRepository implements GenericRepository<StockExchange>
             stmt.setString(5, String.valueOf(entity.getOpeningHour()));
             stmt.setString(6, String.valueOf(entity.getCloseHour()));
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -41,6 +45,7 @@ public class StockExchangeRepository implements GenericRepository<StockExchange>
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                audit.logOperation("get");
                 return extractStockExchangeFromResultSet(rs);
             }
         } catch (SQLException e) {
@@ -63,6 +68,7 @@ public class StockExchangeRepository implements GenericRepository<StockExchange>
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        audit.logOperation("get");
         return exchangeList;
     }
 
@@ -78,6 +84,7 @@ public class StockExchangeRepository implements GenericRepository<StockExchange>
             stmt.setString(5, String.valueOf(entity.getCloseHour()));
             stmt.setInt(6, entity.getIdExchange());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -90,6 +97,7 @@ public class StockExchangeRepository implements GenericRepository<StockExchange>
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdExchange());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -2,6 +2,7 @@ package Persistence;
 
 import Exceptions.InvalidDataException;
 import Model.Platforms.CryptoExchange;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.sql.PreparedStatement;
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 public class CryptoExchangeRepository implements GenericRepository<CryptoExchange> {
 
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public CryptoExchangeRepository(DatabaseConnection db) {
+    public CryptoExchangeRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
     @Override
@@ -30,6 +33,7 @@ public class CryptoExchangeRepository implements GenericRepository<CryptoExchang
             stmt.setInt(6, entity.getICOs() ? 1 : 0);
             stmt.setInt(7, entity.getCardPlans() ? 1 : 0);
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -43,6 +47,7 @@ public class CryptoExchangeRepository implements GenericRepository<CryptoExchang
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                audit.logOperation("get");
                 return extractCryptoExchangeFromResultSet(rs);
             }
         } catch (SQLException e) {
@@ -65,6 +70,7 @@ public class CryptoExchangeRepository implements GenericRepository<CryptoExchang
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        audit.logOperation("get");
         return exchangeList;
     }
 
@@ -81,6 +87,7 @@ public class CryptoExchangeRepository implements GenericRepository<CryptoExchang
             stmt.setInt(6, entity.getCardPlans() ? 1 : 0);
             stmt.setInt(7, entity.getIdExchange());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -93,6 +100,7 @@ public class CryptoExchangeRepository implements GenericRepository<CryptoExchang
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdExchange());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

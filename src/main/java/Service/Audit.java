@@ -1,59 +1,36 @@
 package Service;
 
-import Model.Helpers.AuditEntity;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Audit {
-    private static Audit instance;
-    private static FileWriter writer;
-    private static String path;
 
-    private Audit(){
-        try{
-            path = "audit.csv";
-            writer  = new FileWriter(path);
-        }catch (Exception e){
-            System.out.println("Couldn`t open file for audit");
-        }
+    private final String auditFile;
+    private final Map<String, Integer> operationCount;
+
+    public Audit(String auditFile) {
+        this.auditFile = auditFile;
+        this.operationCount = new HashMap<>();
     }
 
-    public static Audit getInstance() {
-        if (instance == null) {
-            instance = new Audit();
-        }
-        return instance;
+    public void logOperation(String operation) {
+        operationCount.put(operation, operationCount.getOrDefault(operation, 0) + 1);
+        writeToCSV();
     }
 
-    public static void log(AuditEntity audit){
-        try {
-            writer.append(audit.getSchema());
-            writer.append(", ");
-            writer.append(audit.getTable());
-            writer.append(", ");
-            writer.append(audit.getSqlStatement());
-            writer.append("\n");
-
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void log_multiple(ArrayList<AuditEntity> list) {
-        try {
-            for (var item: list) {
-                writer.append(item.getSchema());
-                writer.append(", ");
-                writer.append(item.getTable());
-                writer.append(", ");
-                writer.append(item.getSqlStatement());
-                writer.append("\n");
+    private void writeToCSV() {
+        try (FileWriter writer = new FileWriter(auditFile)) {
+            writer.append("Operation,Times\n");
+            for (Map.Entry<String, Integer> entry : operationCount.entrySet()) {
+                writer.append(entry.getKey())
+                        .append(",")
+                        .append(String.valueOf(entry.getValue()))
+                        .append("\n");
             }
-
-            writer.flush();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }

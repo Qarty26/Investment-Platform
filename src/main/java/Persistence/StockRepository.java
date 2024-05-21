@@ -2,6 +2,7 @@ package Persistence;
 
 import Exceptions.InvalidDataException;
 import Model.Assets.Stock;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.io.IOException;
@@ -13,9 +14,11 @@ import java.util.ArrayList;
 public class StockRepository implements GenericRepository<Stock> {
 
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public StockRepository(DatabaseConnection db) {
+    public StockRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
     @Override
@@ -34,6 +37,7 @@ public class StockRepository implements GenericRepository<Stock> {
             stmt.setString(8, entity.getMarket());
             stmt.setDouble(9, entity.getDividendRate());
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -47,6 +51,7 @@ public class StockRepository implements GenericRepository<Stock> {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                audit.logOperation("get");
                 return extractStockFromResultSet(rs);
             }
         } catch (SQLException e) {
@@ -69,6 +74,7 @@ public class StockRepository implements GenericRepository<Stock> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        audit.logOperation("get");
         return stockList;
     }
 
@@ -87,6 +93,7 @@ public class StockRepository implements GenericRepository<Stock> {
             stmt.setDouble(8, entity.getDividendRate());
             stmt.setInt(9, entity.getIdAsset());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -99,6 +106,7 @@ public class StockRepository implements GenericRepository<Stock> {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdAsset());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

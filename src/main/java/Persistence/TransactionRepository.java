@@ -2,6 +2,7 @@ package Persistence;
 
 import Exceptions.InvalidDataException;
 import Model.Assets.Transaction;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.sql.PreparedStatement;
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 public class TransactionRepository implements GenericRepository<Transaction> {
 
     private final DatabaseConnection db;
+    private final Audit audit;
 
-    public TransactionRepository(DatabaseConnection db) {
+    public TransactionRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
     @Override
@@ -28,6 +31,7 @@ public class TransactionRepository implements GenericRepository<Transaction> {
             stmt.setDouble(4, entity.getAmount());
             stmt.setString(5, entity.getType());
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -41,6 +45,7 @@ public class TransactionRepository implements GenericRepository<Transaction> {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                audit.logOperation("get");
                 return extractTransactionFromResultSet(rs);
             }
         } catch (SQLException e) {
@@ -63,6 +68,7 @@ public class TransactionRepository implements GenericRepository<Transaction> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        audit.logOperation("get");
         return transactionList;
     }
 
@@ -77,6 +83,7 @@ public class TransactionRepository implements GenericRepository<Transaction> {
             stmt.setString(4, entity.getType());
             stmt.setInt(5, entity.getIdTransaction());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,6 +96,7 @@ public class TransactionRepository implements GenericRepository<Transaction> {
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdTransaction());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -7,6 +7,7 @@ import Model.Helpers.ReadUpdateInterface;
 import Model.Platforms.Exchange;
 import Model.User.User;
 import Persistence.*;
+
 import Service.Audit;
 import Service.DatabaseConnection;
 import Service.UserExchangeService;
@@ -42,12 +43,12 @@ public class ConsoleApp {
 
 
     private ConsoleApp() throws SQLException, ClassNotFoundException {
+        audit = new Audit("audit.csv");
         DatabaseConnection db = DatabaseConnection.getInstance();
-        Audit.getInstance();
-        assetRepository = new AssetRepository(db);
-        exchangeRepository = new ExchangeRepository(db);
-        userRepository = new UserRepository(db);
-        walletRepository = new WalletRepository(db);
+        assetRepository = new AssetRepository(db,audit);
+        exchangeRepository = new ExchangeRepository(db,audit);
+        userRepository = new UserRepository(db,audit);
+        walletRepository = new WalletRepository(db,audit);
         userExchangeService = new UserExchangeService(userRepository,exchangeRepository,walletRepository);
     }
 

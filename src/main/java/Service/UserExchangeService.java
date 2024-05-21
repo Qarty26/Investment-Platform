@@ -38,15 +38,16 @@ public class UserExchangeService {
 
 
         System.out.println("Select the index of an existing user");
-        for(int i=0 ;i< userRepository.getSize(); i++)
-            System.out.println(i + " " + userRepository.get(i).getNickName());
+        for(var x: userRepository.getAll())
+            System.out.println(x.getIdUser() + " " + x.getNickName());
 
         int index = scanner.nextInt();
         User user = userRepository.get(index);
 
         System.out.println("Let's create an account, please select an exchange");
-        for(int i=0 ;i< exchangeRepository.getSize(); i++)
-            System.out.println(i + " " + exchangeRepository.get(i).getName());
+        for(var x : exchangeRepository.getAll())
+            System.out.println(x.getIdExchange() + " " + x.getName());
+
 
         index = scanner.nextInt();
         Exchange exchange = exchangeRepository.get(index);

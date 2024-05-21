@@ -4,6 +4,7 @@ import Exceptions.InvalidDataException;
 import Model.Platforms.CryptoExchange;
 import Model.Platforms.Exchange;
 import Model.Platforms.StockExchange;
+import Service.Audit;
 import Service.DatabaseConnection;
 import java.sql.ResultSet;
 
@@ -16,8 +17,10 @@ import java.util.Vector;
 public class ExchangeRepository implements GenericRepository<Exchange>{
 
     private final DatabaseConnection db;
-    public ExchangeRepository(DatabaseConnection db) {
+    private final Audit audit;
+    public ExchangeRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
+        this.audit = audit;
     }
 
     public Vector<Exchange> exchanges = new Vector<>();
@@ -99,6 +102,7 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
             stmt.setInt(3, entity.getAllowDemo() ? 1 : 0);
             stmt.setInt(4, entity.getRequireKYC() ? 1 : 0);
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -112,6 +116,7 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                audit.logOperation("get");
                 return extractExchangeFromResultSet(rs);
             }
         } catch (SQLException e) {
@@ -134,6 +139,7 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        audit.logOperation("get");
         return exchangeList;
     }
 
@@ -147,6 +153,7 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
             stmt.setInt(3, entity.getRequireKYC() ? 1 : 0);
             stmt.setInt(4, entity.getIdExchange());
             stmt.executeUpdate();
+            audit.logOperation("update");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -159,6 +166,7 @@ public class ExchangeRepository implements GenericRepository<Exchange>{
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdExchange());
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -7,6 +7,7 @@ import Model.DataStoring.Wallet;
 import Model.Helpers.Pair;
 import Model.Platforms.Exchange;
 import Model.User.User;
+import Service.Audit;
 import Service.DatabaseConnection;
 
 import java.sql.PreparedStatement;
@@ -20,11 +21,13 @@ import java.util.Vector;
 public class WalletRepository implements GenericRepository<Wallet>{
 
     private final DatabaseConnection db;
+    private final Audit audit;
     public AssetRepository assetRepository;
 
-    public WalletRepository(DatabaseConnection db) {
+    public WalletRepository(DatabaseConnection db, Audit audit) {
         this.db = db;
-        this.assetRepository = new AssetRepository(db);
+        this.assetRepository = new AssetRepository(db,audit);
+        this.audit = audit;
     }
 
     Vector<Wallet> wallets = new Vector<>();
@@ -104,6 +107,7 @@ public class WalletRepository implements GenericRepository<Wallet>{
             stmt.setInt(1, wallet.getIdWallet());
             stmt.setDouble(2, wallet.getBalance());
             stmt.executeUpdate();
+            audit.logOperation("add");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -116,6 +120,7 @@ public class WalletRepository implements GenericRepository<Wallet>{
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                audit.logOperation("get");
                 return extractWalletFromResultSet(rs);
             }
         } catch (SQLException e) {
@@ -131,6 +136,7 @@ public class WalletRepository implements GenericRepository<Wallet>{
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, entity.getIdWallet());
             stmt.executeUpdate();
+            audit.logOperation("delete");
 
 
             deleteSubWallet("Spot", entity.getIdWallet());
@@ -156,6 +162,7 @@ public class WalletRepository implements GenericRepository<Wallet>{
             PreparedStatement stmt = db.connection.prepareStatement(sql);
             stmt.setInt(1, idWallet);
             stmt.executeUpdate();
+            audit.logOperation("delete");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -177,6 +184,7 @@ public class WalletRepository implements GenericRepository<Wallet>{
             stmt.setDouble(1, entity.getBalance());
             stmt.setInt(2, entity.getIdWallet());
             stmt.executeUpdate();
+            audit.logOperation("update");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

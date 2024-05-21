@@ -5,6 +5,7 @@ import Model.Platforms.Exchange;
 import Model.Platforms.StockExchange;
 import Model.User.User;
 import Model.User.Account;
+import Persistence.AssetRepository;
 import View.ConsoleApp;
 
 
@@ -17,17 +18,11 @@ public class Main {
     private static ConsoleApp consoleApp;
 
 
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException, InvalidDataException, IOException {
 
         consoleApp = ConsoleApp.getInstance();
         consoleApp.start();
-
-
-
-
-
-
-
 
     }
 }
